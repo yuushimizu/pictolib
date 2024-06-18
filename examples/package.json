@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "pictolib-examples",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsc && node lib/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.14.5",
+    "pictolib": "1.0.0"
+  },
+  "devDependencies": {
+    "@swc-node/register": "^1.9.2",
+    "typescript": "^5.4.5"
+  }
+}
