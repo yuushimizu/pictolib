@@ -1,4 +1,4 @@
-import { type PictoComponent, type PictoData } from "./picto.js";
+import { type PictoComponent, type PictoData } from "./picto-data.js";
 type PathCommand = Readonly<{
     toSVG: () => string;
 } & ({

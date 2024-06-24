@@ -1,4 +1,4 @@
-import { type PictoComponent, type PictoData } from "./picto.js";
+import { type PictoComponent, type PictoData } from "./picto-data.js";
 
 type PathCommand = Readonly<
   { toSVG: () => string } & (
@@ -52,6 +52,7 @@ function createBuilder(commands: readonly PathCommand[]): PathBuilder {
 export function path(data: PictoData, build: (builder: PathBuilder) => PathBuilder): PictoData {
   const commands = build(createBuilder([])).commands;
   return {
+    ...data,
     components: [
       ...data.components,
       {
