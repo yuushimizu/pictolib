@@ -16,5 +16,5 @@ export type PathBuilder = Readonly<{
     move: (x: number, y: number) => PathBuilder;
     line: (x: number, y: number) => PathBuilder;
 }>;
-export declare function path(data: PictoData, build: (builder: PathBuilder) => PathBuilder): PictoData;
+export declare const path: (data: PictoData, build: (builder: PathBuilder) => PathBuilder) => PictoData;
 export {};

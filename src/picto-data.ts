@@ -5,3 +5,5 @@ export type PictoComponent = Readonly<{
 export type PictoData = Readonly<{
   components: readonly PictoComponent[];
 }>;
+
+export const emptyData: PictoData = { components: [] };
