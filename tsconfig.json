@@ -12,5 +12,5 @@
     "noErrorTruncation": true,
     "strict": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js"]
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "eslint.config.js"]
 }
