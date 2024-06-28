@@ -39,11 +39,22 @@ const group = (data: PictoData, options: PictoGroupOptions, builder: (group: Pic
   };
 };
 
-const wrap = (data: PictoData, options: PictoGroupOptions): PictoGroup => ({
-  group: (...args) => wrap(group(data, ...args), options),
-  path: (...args) => wrap(path(data, ...args), options),
-  rect: (...args) => wrap(rect(data, ...args), options),
-  components: data.components,
-});
+const wrap = (data: PictoData, options: PictoGroupOptions): PictoGroup => {
+  const manipulator =
+    <
+      F extends (data: PictoData, ...args: A) => PictoData,
+      A extends readonly unknown[] = Parameters<F> extends [PictoData, ...infer R] ? R : never
+    >(
+      f: F
+    ) =>
+    (...args: A) =>
+      wrap(f(data, ...args), options);
+  return {
+    group: manipulator(group),
+    path: manipulator(path),
+    rect: manipulator(rect),
+    components: data.components,
+  };
+};
 
 export const create = (options: PictoGroupOptions = {}): PictoGroup => wrap(emptyData, options);

@@ -19,18 +19,24 @@ export type Picto = Manipulators &
     toSVG: () => string;
   }>;
 
-const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => ({
-  group: (...args) => wrap(rootGroup.group(...args), options),
-  path: (...args) => wrap(rootGroup.path(...args), options),
-  rect: (...args) => wrap(rootGroup.rect(...args), options),
-  toSVG: () =>
-    `<svg ${[
-      ["xmlns", "http://www.w3.org/2000/svg"],
-      ...(options.viewBox ? [["viewBox", options.viewBox.join(" ")]] : []),
-      ...(options.stroke ? [["stroke", options.stroke]] : []),
-    ]
-      .map(([name, value]) => `${name}="${value}"`)
-      .join(" ")}>${rootGroup.components.map((component) => component.toSVG()).join("")}</svg>`,
-});
+const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
+  const manipulator =
+    <F extends (...args: A) => PictoGroup, A extends readonly unknown[] = Parameters<F>>(f: F) =>
+    (...args: A) =>
+      wrap(f(...args), options);
+  return {
+    group: manipulator(rootGroup.group),
+    path: manipulator(rootGroup.path),
+    rect: manipulator(rootGroup.rect),
+    toSVG: () =>
+      `<svg ${[
+        ["xmlns", "http://www.w3.org/2000/svg"],
+        ...(options.viewBox ? [["viewBox", options.viewBox.join(" ")]] : []),
+        ...(options.stroke ? [["stroke", options.stroke]] : []),
+      ]
+        .map(([name, value]) => `${name}="${value}"`)
+        .join(" ")}>${rootGroup.components.map((component) => component.toSVG()).join("")}</svg>`,
+  };
+};
 
 export const create = (options: PictoOptions = {}): Picto => wrap(createGroup(), options);
