@@ -4,6 +4,7 @@ import { type RectComponent, rect } from "./rect.js";
 export type PictoGroupOptions = Readonly<{
     stroke?: string | undefined;
     fill?: string | undefined;
+    strokeWidth?: number | undefined;
 }>;
 export type PictoComponent = PictoComponentConstraint & (PathComponent | RectComponent | GroupComponent);
 type ManipulatorFunctions = Readonly<{

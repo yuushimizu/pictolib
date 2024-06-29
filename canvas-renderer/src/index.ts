@@ -1,11 +1,14 @@
 import { type Picto, type PictoComponent, type PictoOptions, type PictoGroupOptions } from "pictolib";
 
 const setGroupOptions = (context: CanvasRenderingContext2D, options: PictoGroupOptions) => {
-  if (options.stroke) {
+  if (options.stroke != undefined) {
     context.strokeStyle = options.stroke;
   }
-  if (options.fill) {
+  if (options.fill != undefined) {
     context.fillStyle = options.fill;
+  }
+  if (options.strokeWidth != undefined) {
+    context.lineWidth = options.strokeWidth;
   }
 };
 

@@ -1,49 +1,40 @@
 import { type PictoData, type PictoComponentConstraint } from "./picto-data.js";
 
-type PathCommand = Readonly<
-  { d: string } & (
-    | {
-        type: "move";
-        x: number;
-        y: number;
-      }
-    | {
-        type: "line";
-        x: number;
-        y: number;
-      }
-  )
->;
+type Point = Readonly<{
+  x: number;
+  y: number;
+}>;
+
+type MoveLine = Readonly<{ type: "moveBy" | "moveTo" | "lineBy" | "lineTo" }> & Point;
+
+type PathCommand = Readonly<{ d: string } & MoveLine>;
 
 export type PathComponent = Readonly<{
   type: "path";
   d: string;
 }>;
 
-export type PathBuilder = Readonly<{
-  commands: readonly PathCommand[];
-  move: (x: number, y: number) => PathBuilder;
-  line: (x: number, y: number) => PathBuilder;
-}>;
+export type PathBuilder = Readonly<
+  {
+    commands: readonly PathCommand[];
+  } & {
+    [K in "move" | "moveTo" | "line" | "lineTo"]: (x: number, y: number) => PathBuilder;
+  }
+>;
 
-const move = (x: number, y: number): PathCommand => ({
-  type: "move",
+const moveLine = (type: MoveLine["type"], command: string, x: number, y: number): PathCommand => ({
+  type,
   x,
   y,
-  d: `m ${String(x)} ${String(y)}`,
-});
-
-const line = (x: number, y: number): PathCommand => ({
-  type: "line",
-  x,
-  y,
-  d: `l ${String(x)} ${String(y)}`,
+  d: `${command}${String(x)},${String(y)}`,
 });
 
 const createBuilder = (commands: readonly PathCommand[]): PathBuilder => ({
   commands,
-  move: (x, y) => createBuilder([...commands, move(x, y)]),
-  line: (x, y) => createBuilder([...commands, line(x, y)]),
+  move: (x, y) => createBuilder([...commands, moveLine("moveBy", "m", x, y)]),
+  moveTo: (x, y) => createBuilder([...commands, moveLine("moveTo", "M", x, y)]),
+  line: (x, y) => createBuilder([...commands, moveLine("lineBy", "l", x, y)]),
+  lineTo: (x, y) => createBuilder([...commands, moveLine("lineTo", "L", x, y)]),
 });
 
 export const path = <C extends PictoComponentConstraint>(

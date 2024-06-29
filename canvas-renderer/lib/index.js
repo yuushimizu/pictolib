@@ -1,9 +1,12 @@
 const setGroupOptions = (context, options) => {
-    if (options.stroke) {
+    if (options.stroke != undefined) {
         context.strokeStyle = options.stroke;
     }
-    if (options.fill) {
+    if (options.fill != undefined) {
         context.fillStyle = options.fill;
+    }
+    if (options.strokeWidth != undefined) {
+        context.lineWidth = options.strokeWidth;
     }
 };
 const drawGroup = (context, parent) => {

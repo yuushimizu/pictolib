@@ -1,23 +1,22 @@
 import { type PictoData, type PictoComponentConstraint } from "./picto-data.js";
+type Point = Readonly<{
+    x: number;
+    y: number;
+}>;
+type MoveLine = Readonly<{
+    type: "moveBy" | "moveTo" | "lineBy" | "lineTo";
+}> & Point;
 type PathCommand = Readonly<{
     d: string;
-} & ({
-    type: "move";
-    x: number;
-    y: number;
-} | {
-    type: "line";
-    x: number;
-    y: number;
-})>;
+} & MoveLine>;
 export type PathComponent = Readonly<{
     type: "path";
     d: string;
 }>;
 export type PathBuilder = Readonly<{
     commands: readonly PathCommand[];
-    move: (x: number, y: number) => PathBuilder;
-    line: (x: number, y: number) => PathBuilder;
+} & {
+    [K in "move" | "moveTo" | "line" | "lineTo"]: (x: number, y: number) => PathBuilder;
 }>;
 export declare const path: <C extends PictoComponentConstraint>(data: PictoData<C>, build: (builder: PathBuilder) => PathBuilder) => PictoData<C | PathComponent>;
 export {};

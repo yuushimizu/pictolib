@@ -4,8 +4,9 @@ import { type Picto, type PictoComponent, type PictoGroupOptions } from "pictoli
 type Builder = ReturnType<typeof create>;
 
 const groupOptionsAttributes = (options: PictoGroupOptions): Record<string, string> => ({
-  ...(options.stroke ? { stroke: options.stroke } : {}),
-  ...(options.fill ? { fill: options.fill } : {}),
+  ...(options.stroke != undefined ? { stroke: options.stroke } : {}),
+  ...(options.fill != undefined ? { fill: options.fill } : {}),
+  ...(options.strokeWidth != undefined ? { "stroke-width": String(options.strokeWidth) } : {}),
 });
 
 const buildChildren = (builder: Builder, parent: Readonly<{ components: readonly PictoComponent[] }>): Builder =>
