@@ -1,6 +1,7 @@
 import { create } from "xmlbuilder2";
 const groupOptionsAttributes = (options) => ({
     ...(options.stroke ? { stroke: options.stroke } : {}),
+    ...(options.fill ? { fill: options.fill } : {}),
 });
 const buildChildren = (builder, parent) => parent.components.reduce((builder, component) => build(builder, component), builder);
 const build = (builder, component) => {
@@ -17,7 +18,7 @@ const build = (builder, component) => {
             })
                 .up();
         case "group":
-            return buildChildren(builder.ele("g", groupOptionsAttributes(component.options)), component);
+            return buildChildren(builder.ele("g", groupOptionsAttributes(component.options)), component).up();
     }
 };
 export const renderAsSVG = (picto) => buildChildren(create().ele("svg", {

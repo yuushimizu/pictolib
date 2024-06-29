@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "pictolib-examples",
+  "name": "pictolib-canvas-renderer",
   "version": "1.0.0",
   "description": "",
   "type": "module",

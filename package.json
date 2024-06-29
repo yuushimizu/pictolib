@@ -3,6 +3,9 @@
   "workspaces": [
     "core",
     "svg-renderer",
-    "examples"
+    "canvas-renderer",
+    "examples",
+    "svg-examples",
+    "canvas-examples"
   ]
 }

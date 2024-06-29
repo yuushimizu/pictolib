@@ -5,6 +5,7 @@ type Builder = ReturnType<typeof create>;
 
 const groupOptionsAttributes = (options: PictoGroupOptions): Record<string, string> => ({
   ...(options.stroke ? { stroke: options.stroke } : {}),
+  ...(options.fill ? { fill: options.fill } : {}),
 });
 
 const buildChildren = (builder: Builder, parent: Readonly<{ components: readonly PictoComponent[] }>): Builder =>
@@ -24,7 +25,7 @@ const build = (builder: Builder, component: PictoComponent): Builder => {
         })
         .up();
     case "group":
-      return buildChildren(builder.ele("g", groupOptionsAttributes(component.options)), component);
+      return buildChildren(builder.ele("g", groupOptionsAttributes(component.options)), component).up();
   }
 };
 

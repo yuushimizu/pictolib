@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "pictolib-svg-examples",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "npx node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.14.5"
+  },
+  "devDependencies": {
+    "@swc-node/register": "^1.9.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

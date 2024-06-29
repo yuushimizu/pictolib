@@ -3,6 +3,7 @@ import { type PathComponent, path } from "./path.js";
 import { type RectComponent, rect } from "./rect.js";
 export type PictoGroupOptions = Readonly<{
     stroke?: string | undefined;
+    fill?: string | undefined;
 }>;
 export type PictoComponent = PictoComponentConstraint & (PathComponent | RectComponent | GroupComponent);
 type ManipulatorFunctions = Readonly<{
