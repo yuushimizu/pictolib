@@ -1,6 +1,6 @@
-import { type PictoComponent, type PictoData } from "./picto-data.js";
+import { type PictoData, type PictoComponentConstraint } from "./picto-data.js";
 type PathCommand = Readonly<{
-    toSVG: () => string;
+    d: string;
 } & ({
     type: "move";
     x: number;
@@ -10,11 +10,14 @@ type PathCommand = Readonly<{
     x: number;
     y: number;
 })>;
-export type PathComponent = PictoComponent;
+export type PathComponent = Readonly<{
+    type: "path";
+    d: string;
+}>;
 export type PathBuilder = Readonly<{
     commands: readonly PathCommand[];
     move: (x: number, y: number) => PathBuilder;
     line: (x: number, y: number) => PathBuilder;
 }>;
-export declare const path: (data: PictoData, build: (builder: PathBuilder) => PathBuilder) => PictoData;
+export declare const path: <C extends PictoComponentConstraint>(data: PictoData<C>, build: (builder: PathBuilder) => PathBuilder) => PictoData<C | PathComponent>;
 export {};

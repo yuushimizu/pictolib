@@ -1,7 +1,7 @@
-import { type PictoComponent, type PictoData } from "./picto-data.js";
+import { type PictoData, type PictoComponentConstraint } from "./picto-data.js";
 
 type PathCommand = Readonly<
-  { toSVG: () => string } & (
+  { d: string } & (
     | {
         type: "move";
         x: number;
@@ -15,7 +15,10 @@ type PathCommand = Readonly<
   )
 >;
 
-export type PathComponent = PictoComponent;
+export type PathComponent = Readonly<{
+  type: "path";
+  d: string;
+}>;
 
 export type PathBuilder = Readonly<{
   commands: readonly PathCommand[];
@@ -27,14 +30,14 @@ const move = (x: number, y: number): PathCommand => ({
   type: "move",
   x,
   y,
-  toSVG: () => `m ${x} ${y}`,
+  d: `m ${String(x)} ${String(y)}`,
 });
 
 const line = (x: number, y: number): PathCommand => ({
   type: "line",
   x,
   y,
-  toSVG: () => `l ${x} ${y}`,
+  d: `l ${String(x)} ${String(y)}`,
 });
 
 const createBuilder = (commands: readonly PathCommand[]): PathBuilder => ({
@@ -43,14 +46,18 @@ const createBuilder = (commands: readonly PathCommand[]): PathBuilder => ({
   line: (x, y) => createBuilder([...commands, line(x, y)]),
 });
 
-export const path = (data: PictoData, build: (builder: PathBuilder) => PathBuilder): PictoData => {
+export const path = <C extends PictoComponentConstraint>(
+  data: PictoData<C>,
+  build: (builder: PathBuilder) => PathBuilder
+): PictoData<C | PathComponent> => {
   const commands = build(createBuilder([])).commands;
   return {
     ...data,
     components: [
       ...data.components,
       {
-        toSVG: () => `<path d="${commands.map((command) => command.toSVG()).join(" ")}"/>`,
+        type: "path",
+        d: commands.map((command) => command.d).join(" "),
       },
     ],
   };

@@ -2,10 +2,13 @@ import {
   type PictoGroup,
   type PictoGroupOptions,
   type PictoGroupManipulators,
+  type PictoComponent,
   create as createGroup,
 } from "./group.js";
 
-type PictoOptions = PictoGroupOptions &
+export { type PictoComponent } from "./group.js";
+
+export type PictoOptions = PictoGroupOptions &
   Readonly<{
     viewBox?: readonly [number, number, number, number] | undefined;
   }>;
@@ -16,7 +19,8 @@ type Manipulators = Readonly<{
 
 export type Picto = Manipulators &
   Readonly<{
-    toSVG: () => string;
+    options: PictoOptions;
+    components: readonly PictoComponent[];
   }>;
 
 const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
@@ -28,14 +32,8 @@ const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
     group: manipulator(rootGroup.group),
     path: manipulator(rootGroup.path),
     rect: manipulator(rootGroup.rect),
-    toSVG: () =>
-      `<svg ${[
-        ["xmlns", "http://www.w3.org/2000/svg"],
-        ...(options.viewBox ? [["viewBox", options.viewBox.join(" ")]] : []),
-        ...(options.stroke ? [["stroke", options.stroke]] : []),
-      ]
-        .map(([name, value]) => `${name}="${value}"`)
-        .join(" ")}>${rootGroup.components.map((component) => component.toSVG()).join("")}</svg>`,
+    options,
+    components: rootGroup.data.components,
   };
 };
 

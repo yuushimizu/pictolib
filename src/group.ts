@@ -1,49 +1,60 @@
-import { type PictoData, type PictoComponent, emptyData } from "./picto-data.js";
-import { path } from "./path.js";
-import { rect } from "./rect.js";
+import { type PictoData, type PictoComponentConstraint, emptyData } from "./picto-data.js";
+import { type PathComponent, path } from "./path.js";
+import { type RectComponent, rect } from "./rect.js";
 
 export type PictoGroupOptions = Readonly<{
   stroke?: string | undefined;
 }>;
 
+export type PictoComponent = PictoComponentConstraint & (PathComponent | RectComponent | GroupComponent);
+
 type ManipulatorFunctions = Readonly<{
   group: typeof group;
-  path: typeof path;
-  rect: typeof rect;
+  path: typeof path<PictoComponent>;
+  rect: typeof rect<PictoComponent>;
 }>;
 
 export type PictoGroupManipulators = Readonly<{
   [K in keyof ManipulatorFunctions]: (
-    ...args: Parameters<ManipulatorFunctions[K]> extends readonly [PictoData, ...infer R] ? R : never
+    ...args: Parameters<ManipulatorFunctions[K]> extends readonly [PictoData<PictoComponent>, ...infer R] ? R : never
   ) => PictoGroup;
 }>;
 
 export type PictoGroup = PictoGroupManipulators &
   Readonly<{
-    components: readonly PictoComponent[];
+    data: PictoData<PictoComponent>;
   }>;
 
-const group = (data: PictoData, options: PictoGroupOptions, builder: (group: PictoGroup) => PictoGroup): PictoData => {
+export type GroupComponent = Readonly<{
+  type: "group";
+  options: PictoGroupOptions;
+  components: readonly PictoComponent[];
+}>;
+
+const group = (
+  data: PictoData<PictoComponent>,
+  options: PictoGroupOptions,
+  builder: (group: PictoGroup) => PictoGroup
+): PictoData<PictoComponent> => {
   const group = builder(create());
   return {
     ...data,
     components: [
       ...data.components,
       {
-        toSVG: () =>
-          `<g ${(options.stroke ? [["stroke", options.stroke]] : [])
-            .map(([name, value]) => `${name}="${value}"`)
-            .join(" ")}>${group.components.map((component) => component.toSVG()).join("")}</g>`,
+        type: "group",
+        options,
+        components: group.data.components,
       },
     ],
   };
 };
 
-const wrap = (data: PictoData, options: PictoGroupOptions): PictoGroup => {
+const wrap = (data: PictoData<PictoComponent>, options: PictoGroupOptions): PictoGroup => {
   const manipulator =
     <
-      F extends (data: PictoData, ...args: A) => PictoData,
-      A extends readonly unknown[] = Parameters<F> extends [PictoData, ...infer R] ? R : never
+      F extends (data: PictoData<PictoComponent>, ...args: A) => PictoData<PictoComponent>,
+      A extends readonly unknown[] = Parameters<F> extends [PictoData<PictoComponent>, ...infer R] ? R : never
     >(
       f: F
     ) =>
@@ -53,7 +64,7 @@ const wrap = (data: PictoData, options: PictoGroupOptions): PictoGroup => {
     group: manipulator(group),
     path: manipulator(path),
     rect: manipulator(rect),
-    components: data.components,
+    data,
   };
 };
 

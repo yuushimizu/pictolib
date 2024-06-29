@@ -1,11 +1,29 @@
-import { type PictoData } from "./picto-data";
+import { type PictoData, type PictoComponentConstraint } from "./picto-data";
 
-export const rect = (data: PictoData, x: number, y: number, width: number, height: number): PictoData => ({
+export type RectComponent = Readonly<{
+  type: "rect";
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}>;
+
+export const rect = <C extends PictoComponentConstraint>(
+  data: PictoData<C>,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): PictoData<C | RectComponent> => ({
   ...data,
   components: [
     ...data.components,
     {
-      toSVG: () => `<rect x="${x}" y="${y}" width="${width}" height="${height}"></rect>`,
+      type: "rect",
+      x,
+      y,
+      width,
+      height,
     },
   ],
 });

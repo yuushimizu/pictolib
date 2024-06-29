@@ -1,7 +1,7 @@
-export type PictoComponent = Readonly<{
-    toSVG: () => string;
+export type PictoComponentConstraint = Readonly<{
+    type: string;
 }>;
-export type PictoData = Readonly<{
-    components: readonly PictoComponent[];
+export type PictoData<C extends PictoComponentConstraint> = Readonly<{
+    components: readonly C[];
 }>;
-export declare const emptyData: PictoData;
+export declare const emptyData: PictoData<never>;

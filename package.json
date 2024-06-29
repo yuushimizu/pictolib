@@ -7,8 +7,22 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./lib/index.d.ts",
-        "default": "./lib/index.js"
+        "types": [
+          "./lib/index.d.ts"
+        ],
+        "default": [
+          "./lib/index.js"
+        ]
+      }
+    },
+    "./renderer": {
+      "import": {
+        "types": [
+          "./lib/renderer.d.ts"
+        ],
+        "default": [
+          "./lib/renderer.js"
+        ]
       }
     }
   },
