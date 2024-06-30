@@ -1,13 +1,11 @@
-export const rect = (data, x, y, width, height) => ({
+export const rect = (data, { round, ...params }) => ({
     ...data,
     components: [
         ...data.components,
         {
+            ...params,
             type: "rect",
-            x,
-            y,
-            width,
-            height,
+            round: typeof round === "number" ? { x: round, y: round } : round,
         },
     ],
 });

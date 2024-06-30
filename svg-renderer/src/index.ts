@@ -23,6 +23,7 @@ const build = (builder: Builder, component: PictoComponent): Builder => {
           y: component.y,
           width: component.width,
           height: component.height,
+          ...(component.round ? { rx: component.round.x, ry: component.round.y } : {}),
         })
         .up();
     case "group":
@@ -30,14 +31,16 @@ const build = (builder: Builder, component: PictoComponent): Builder => {
   }
 };
 
-export const renderAsSVG = (picto: Picto): string =>
-  buildChildren(
+export const renderAsSVG = (picto: Picto): string => {
+  const viewBox = picto.options.viewBox;
+  return buildChildren(
     create().ele("svg", {
       xmlns: "http://www.w3.org/2000/svg",
-      ...(picto.options.viewBox ? { viewBox: picto.options.viewBox.join(" ") } : {}),
+      ...(viewBox ? { viewBox: [viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(" ") } : {}),
       ...groupOptionsAttributes(picto.options),
     }),
     picto
   )
     .up()
     .end();
+};

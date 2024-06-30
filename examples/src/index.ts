@@ -1,15 +1,19 @@
 import { create } from "pictolib";
 import { PictoGroup } from "../../core/lib/group";
 
-export const battery = create({
-  viewBox: [100, 200, 300, 400],
-  stroke: "#444",
-  fill: "transparent",
-  strokeWidth: 10,
-})
-  .group({ fill: "#444" }, (g) => g.rect(170, 210, 160, 40))
-  .rect(110, 250, 280, 340)
-  .group(
-    { stroke: "transparent", fill: "#8d2" },
-    (g): PictoGroup => [...Array(3).keys()].reduce((g, i) => g.rect(125, 265 + i * 107.5, 250, 95), g)
-  );
+export const battery = (level: number) => {
+  const lineColor = level === 0 ? "#aaa" : "#222";
+  return create({
+    viewBox: { x: -1, y: -1, width: 2, height: 2 },
+    stroke: lineColor,
+    fill: "transparent",
+    strokeWidth: 0.1,
+  })
+    .group({ fill: lineColor }, (g) => g.rect({ x: -0.24, y: -0.85, width: 0.48, height: 0.1 }))
+    .rect({ x: -0.6, y: -0.7, width: 1.2, height: 1.55, round: 0.1 })
+    .group(
+      { stroke: "transparent", fill: ["", "#e66", "#ea4", "#8d2"][level] },
+      (g): PictoGroup =>
+        [...Array(level).keys()].reduce((g, i) => g.rect({ x: -0.45, y: 0.35 - i * 0.45, width: 0.9, height: 0.35 }), g)
+    );
+};

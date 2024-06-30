@@ -16,17 +16,21 @@ const build = (builder, component) => {
                 y: component.y,
                 width: component.width,
                 height: component.height,
+                ...(component.round ? { rx: component.round.x, ry: component.round.y } : {}),
             })
                 .up();
         case "group":
             return buildChildren(builder.ele("g", groupOptionsAttributes(component.options)), component).up();
     }
 };
-export const renderAsSVG = (picto) => buildChildren(create().ele("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    ...(picto.options.viewBox ? { viewBox: picto.options.viewBox.join(" ") } : {}),
-    ...groupOptionsAttributes(picto.options),
-}), picto)
-    .up()
-    .end();
+export const renderAsSVG = (picto) => {
+    const viewBox = picto.options.viewBox;
+    return buildChildren(create().ele("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        ...(viewBox ? { viewBox: [viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(" ") } : {}),
+        ...groupOptionsAttributes(picto.options),
+    }), picto)
+        .up()
+        .end();
+};
 //# sourceMappingURL=index.js.map

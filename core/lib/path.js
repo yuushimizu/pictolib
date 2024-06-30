@@ -1,15 +1,14 @@
-const moveLine = (type, command, x, y) => ({
+const moveLine = (type, command, point) => ({
+    ...point,
     type,
-    x,
-    y,
-    d: `${command}${String(x)},${String(y)}`,
+    d: `${command}${String(point.x)},${String(point.y)}`,
 });
 const createBuilder = (commands) => ({
     commands,
-    move: (x, y) => createBuilder([...commands, moveLine("moveBy", "m", x, y)]),
-    moveTo: (x, y) => createBuilder([...commands, moveLine("moveTo", "M", x, y)]),
-    line: (x, y) => createBuilder([...commands, moveLine("lineBy", "l", x, y)]),
-    lineTo: (x, y) => createBuilder([...commands, moveLine("lineTo", "L", x, y)]),
+    move: (point) => createBuilder([...commands, moveLine("moveBy", "m", point)]),
+    moveTo: (point) => createBuilder([...commands, moveLine("moveTo", "M", point)]),
+    line: (point) => createBuilder([...commands, moveLine("lineBy", "l", point)]),
+    lineTo: (point) => createBuilder([...commands, moveLine("lineTo", "L", point)]),
 });
 export const path = (data, build) => {
     const commands = build(createBuilder([])).commands;

@@ -5,12 +5,13 @@ import {
   type PictoComponent,
   create as createGroup,
 } from "./group.js";
+import { type Rect } from "./coord.js";
 
 export { type PictoComponent, type PictoGroupOptions } from "./group.js";
 
 export type PictoOptions = PictoGroupOptions &
   Readonly<{
-    viewBox?: readonly [number, number, number, number] | undefined;
+    viewBox?: Rect | undefined;
   }>;
 
 type Manipulators = Readonly<{

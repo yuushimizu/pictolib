@@ -37,8 +37,10 @@ const draw = (context: CanvasRenderingContext2D, component: PictoComponent) => {
       }
       break;
     case "rect":
-      context.fillRect(component.x, component.y, component.width, component.height);
-      context.strokeRect(component.x, component.y, component.width, component.height);
+      context.beginPath();
+      context.roundRect(component.x, component.y, component.width, component.height, component.round);
+      context.fill();
+      context.stroke();
       break;
     case "group":
       drawGroup(context, component);
@@ -60,12 +62,12 @@ const setViewBox = (context: CanvasRenderingContext2D, viewBox: PictoOptions["vi
   if (viewBox) {
     if (options.width != undefined && options.height != undefined) {
       const scale = {
-        x: options.width / viewBox[2],
-        y: options.height / viewBox[3],
+        x: options.width / viewBox.width,
+        y: options.height / viewBox.height,
       };
       context.scale(scale.x, scale.y);
     }
-    context.translate(-viewBox[0], -viewBox[1]);
+    context.translate(-viewBox.x, -viewBox.y);
   }
 };
 

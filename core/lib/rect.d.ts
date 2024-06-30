@@ -1,9 +1,12 @@
 import { type PictoData, type PictoComponentConstraint } from "./picto-data";
+import { type Rect, type Coord } from "./coord.js";
+type Params = Rect & Readonly<{
+    round: undefined | Coord;
+}>;
 export type RectComponent = Readonly<{
     type: "rect";
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}>;
-export declare const rect: <C extends PictoComponentConstraint>(data: PictoData<C>, x: number, y: number, width: number, height: number) => PictoData<C | RectComponent>;
+}> & Params;
+export declare const rect: <C extends PictoComponentConstraint>(data: PictoData<C>, { round, ...params }: Omit<Params, "round"> & Readonly<{
+    round?: Params["round"] | number;
+}>) => PictoData<C | RectComponent>;
+export {};
