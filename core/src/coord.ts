@@ -9,3 +9,14 @@ export type Size = Readonly<{
 }>;
 
 export type Rect = Coord & Size;
+
+export const normalizeAngle = (angle: number): number => {
+  let result = angle;
+  while (result < 0) {
+    result += Math.PI * 2;
+  }
+  while (result >= Math.PI * 2) {
+    result -= Math.PI * 2;
+  }
+  return result;
+};

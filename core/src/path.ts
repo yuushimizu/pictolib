@@ -1,4 +1,4 @@
-import { type PictoData, type PictoComponentConstraint } from "./picto-data.js";
+import { type PictoData, type PictoComponentConstraint, addComponent } from "./picto-data.js";
 import { type Coord } from "./coord.js";
 
 type MoveLine = Readonly<{ type: "moveBy" | "moveTo" | "lineBy" | "lineTo" }> & Coord;
@@ -37,14 +37,8 @@ export const path = <C extends PictoComponentConstraint>(
   build: (builder: PathBuilder) => PathBuilder
 ): PictoData<C | PathComponent> => {
   const commands = build(createBuilder([])).commands;
-  return {
-    ...data,
-    components: [
-      ...data.components,
-      {
-        type: "path",
-        d: commands.map((command) => command.d).join(" "),
-      },
-    ],
-  };
+  return addComponent<C | PathComponent>(data, {
+    type: "path",
+    d: commands.map((command) => command.d).join(" "),
+  });
 };

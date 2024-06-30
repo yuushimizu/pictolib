@@ -1,4 +1,4 @@
-import { type PictoData, type PictoComponentConstraint } from "./picto-data";
+import { type PictoData, type PictoComponentConstraint } from "./picto-data.js";
 import { type Rect, type Coord } from "./coord.js";
 type Params = Rect & Readonly<{
     round: undefined | Coord;

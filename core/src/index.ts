@@ -9,6 +9,8 @@ import { type Rect } from "./coord.js";
 
 export { type PictoComponent, type PictoGroupOptions } from "./group.js";
 
+export * from "./coord.js";
+
 export type PictoOptions = PictoGroupOptions &
   Readonly<{
     viewBox?: Rect | undefined;
@@ -33,6 +35,8 @@ const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
     group: manipulator(rootGroup.group),
     path: manipulator(rootGroup.path),
     rect: manipulator(rootGroup.rect),
+    circle: manipulator(rootGroup.circle),
+    arc: manipulator(rootGroup.arc),
     options,
     components: rootGroup.data.components,
   };

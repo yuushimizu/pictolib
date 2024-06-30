@@ -1,4 +1,4 @@
-import { type PictoData, type PictoComponentConstraint } from "./picto-data";
+import { type PictoData, type PictoComponentConstraint, addComponent } from "./picto-data.js";
 import { type Rect, type Coord } from "./coord.js";
 
 type Params = Rect &
@@ -20,14 +20,9 @@ export const rect = <C extends PictoComponentConstraint>(
     Readonly<{
       round?: Params["round"] | number;
     }>
-): PictoData<C | RectComponent> => ({
-  ...data,
-  components: [
-    ...data.components,
-    {
-      ...params,
-      type: "rect",
-      round: typeof round === "number" ? { x: round, y: round } : round,
-    },
-  ],
-});
+): PictoData<C | RectComponent> =>
+  addComponent<C | RectComponent>(data, {
+    ...params,
+    type: "rect",
+    round: typeof round === "number" ? { x: round, y: round } : round,
+  });

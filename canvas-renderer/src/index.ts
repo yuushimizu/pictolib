@@ -1,15 +1,16 @@
 import { type Picto, type PictoComponent, type PictoOptions, type PictoGroupOptions } from "pictolib";
 
 const setGroupOptions = (context: CanvasRenderingContext2D, options: PictoGroupOptions) => {
-  if (options.stroke != undefined) {
-    context.strokeStyle = options.stroke;
-  }
-  if (options.fill != undefined) {
-    context.fillStyle = options.fill;
-  }
-  if (options.strokeWidth != undefined) {
-    context.lineWidth = options.strokeWidth;
-  }
+  const set = <T>(value: T | undefined, f: (value: T) => void) => {
+    if (value != undefined) {
+      f(value);
+    }
+  };
+  set(options.stroke, (value) => (context.strokeStyle = value));
+  set(options.fill, (value) => (context.fillStyle = value));
+  set(options.strokeWidth, (value) => (context.lineWidth = value));
+  set(options.lineCap, (value) => (context.lineCap = value));
+  set(options.lineJoin, (value) => (context.lineJoin = value));
 };
 
 const drawGroup = (
@@ -40,6 +41,18 @@ const draw = (context: CanvasRenderingContext2D, component: PictoComponent) => {
       context.beginPath();
       context.roundRect(component.x, component.y, component.width, component.height, component.round);
       context.fill();
+      context.stroke();
+      break;
+    case "arc":
+      context.beginPath();
+      context.arc(
+        component.center.x,
+        component.center.y,
+        component.radius,
+        component.start,
+        component.end,
+        component.counterclockwise
+      );
       context.stroke();
       break;
     case "group":

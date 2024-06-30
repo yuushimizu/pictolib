@@ -1,6 +1,7 @@
 import { type PictoGroupOptions, type PictoGroupManipulators, type PictoComponent } from "./group.js";
 import { type Rect } from "./coord.js";
 export { type PictoComponent, type PictoGroupOptions } from "./group.js";
+export * from "./coord.js";
 export type PictoOptions = PictoGroupOptions & Readonly<{
     viewBox?: Rect | undefined;
 }>;

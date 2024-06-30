@@ -7,3 +7,4 @@ export type Size = Readonly<{
     height: number;
 }>;
 export type Rect = Coord & Size;
+export declare const normalizeAngle: (angle: number) => number;

@@ -1,3 +1,4 @@
+import { addComponent } from "./picto-data.js";
 const moveLine = (type, command, point) => ({
     ...point,
     type,
@@ -12,15 +13,9 @@ const createBuilder = (commands) => ({
 });
 export const path = (data, build) => {
     const commands = build(createBuilder([])).commands;
-    return {
-        ...data,
-        components: [
-            ...data.components,
-            {
-                type: "path",
-                d: commands.map((command) => command.d).join(" "),
-            },
-        ],
-    };
+    return addComponent(data, {
+        type: "path",
+        d: commands.map((command) => command.d).join(" "),
+    });
 };
 //# sourceMappingURL=path.js.map

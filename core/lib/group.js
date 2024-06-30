@@ -1,19 +1,15 @@
-import { emptyData } from "./picto-data.js";
+import { emptyData, addComponent } from "./picto-data.js";
 import { path } from "./path.js";
 import { rect } from "./rect.js";
+import { circle } from "./circle.js";
+import { arc } from "./arc.js";
 const group = (data, options, builder) => {
     const group = builder(create());
-    return {
-        ...data,
-        components: [
-            ...data.components,
-            {
-                type: "group",
-                options,
-                components: group.data.components,
-            },
-        ],
-    };
+    return addComponent(data, {
+        type: "group",
+        options,
+        components: group.data.components,
+    });
 };
 const wrap = (data, options) => {
     const manipulator = (f) => (...args) => wrap(f(data, ...args), options);
@@ -21,6 +17,8 @@ const wrap = (data, options) => {
         group: manipulator(group),
         path: manipulator(path),
         rect: manipulator(rect),
+        circle: manipulator(circle),
+        arc: manipulator(arc),
         data,
     };
 };
