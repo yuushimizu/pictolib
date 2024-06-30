@@ -13,14 +13,16 @@ const group = (data, options, builder) => {
 };
 const wrap = (data, options) => {
     const manipulator = (f) => (...args) => wrap(f(data, ...args), options);
-    return {
+    const newGroup = {
         group: manipulator(group),
         path: manipulator(path),
         rect: manipulator(rect),
         circle: manipulator(circle),
         arc: manipulator(arc),
+        repeat: (times, f) => [...Array(times).keys()].reduce((group, n) => f(group, n), newGroup),
         data,
     };
+    return newGroup;
 };
 export const create = (options = undefined) => wrap(emptyData, options ?? {});
 //# sourceMappingURL=group.js.map

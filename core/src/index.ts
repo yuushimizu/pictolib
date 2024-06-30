@@ -22,6 +22,7 @@ type Manipulators = Readonly<{
 
 export type Picto = Manipulators &
   Readonly<{
+    repeat: (...args: Parameters<PictoGroup["repeat"]>) => Picto;
     options: PictoOptions;
     components: readonly PictoComponent[];
   }>;
@@ -37,6 +38,7 @@ const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
     rect: manipulator(rootGroup.rect),
     circle: manipulator(rootGroup.circle),
     arc: manipulator(rootGroup.arc),
+    repeat: manipulator(rootGroup.repeat),
     options,
     components: rootGroup.data.components,
   };

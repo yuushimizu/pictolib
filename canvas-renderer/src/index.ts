@@ -43,6 +43,13 @@ const draw = (context: CanvasRenderingContext2D, component: PictoComponent) => {
       context.fill();
       context.stroke();
       break;
+    case "circle":
+      context.beginPath();
+      context.arc(component.center.x, component.center.y, component.radius, 0, Math.PI * 2);
+      context.closePath();
+      context.fill();
+      context.stroke();
+      break;
     case "arc":
       context.beginPath();
       context.arc(

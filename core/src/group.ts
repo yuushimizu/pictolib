@@ -32,6 +32,7 @@ export type PictoGroupManipulators = Readonly<{
 export type PictoGroup = PictoGroupManipulators &
   Readonly<{
     data: PictoData<PictoComponent>;
+    repeat: (times: number, f: (group: PictoGroup, n: number) => PictoGroup) => PictoGroup;
   }>;
 
 export type GroupComponent = Readonly<{
@@ -63,14 +64,16 @@ const wrap = (data: PictoData<PictoComponent>, options: PictoGroupOptions): Pict
     ) =>
     (...args: A) =>
       wrap(f(data, ...args), options);
-  return {
+  const newGroup: PictoGroup = {
     group: manipulator(group),
     path: manipulator(path),
     rect: manipulator(rect),
     circle: manipulator(circle),
     arc: manipulator(arc),
+    repeat: (times, f) => [...Array(times).keys()].reduce((group, n) => f(group, n), newGroup),
     data,
   };
+  return newGroup;
 };
 
 export const create = (options: PictoGroupOptions | undefined = undefined): PictoGroup =>

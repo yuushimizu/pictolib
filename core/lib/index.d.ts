@@ -1,4 +1,4 @@
-import { type PictoGroupOptions, type PictoGroupManipulators, type PictoComponent } from "./group.js";
+import { type PictoGroup, type PictoGroupOptions, type PictoGroupManipulators, type PictoComponent } from "./group.js";
 import { type Rect } from "./coord.js";
 export { type PictoComponent, type PictoGroupOptions } from "./group.js";
 export * from "./coord.js";
@@ -9,6 +9,7 @@ type Manipulators = Readonly<{
     [K in keyof PictoGroupManipulators]: (...args: Parameters<PictoGroupManipulators[K]>) => Picto;
 }>;
 export type Picto = Manipulators & Readonly<{
+    repeat: (...args: Parameters<PictoGroup["repeat"]>) => Picto;
     options: PictoOptions;
     components: readonly PictoComponent[];
 }>;

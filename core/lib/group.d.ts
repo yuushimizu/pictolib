@@ -23,6 +23,7 @@ export type PictoGroupManipulators = Readonly<{
 }>;
 export type PictoGroup = PictoGroupManipulators & Readonly<{
     data: PictoData<PictoComponent>;
+    repeat: (times: number, f: (group: PictoGroup, n: number) => PictoGroup) => PictoGroup;
 }>;
 export type GroupComponent = Readonly<{
     type: "group";

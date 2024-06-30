@@ -9,7 +9,7 @@ export const battery = (level) => {
     })
         .group({ fill: lineColor }, (g) => g.rect({ x: -0.24, y: -0.85, width: 0.48, height: 0.1 }))
         .rect({ x: -0.6, y: -0.7, width: 1.2, height: 1.55, round: 0.1 })
-        .group({ stroke: "transparent", fill: ["", "#e66", "#ea4", "#8d2"][level] }, (g) => [...Array(level).keys()].reduce((g, i) => g.rect({ x: -0.45, y: 0.35 - i * 0.45, width: 0.9, height: 0.35 }), g));
+        .group({ stroke: "transparent", fill: ["", "#e66", "#ea4", "#8d2"][level] }, (g) => g.repeat(level, (g, n) => g.rect({ x: -0.45, y: 0.35 - n * 0.45, width: 0.9, height: 0.35 })));
 };
 export const wifi = () => {
     const angle = 0.75;
@@ -20,14 +20,14 @@ export const wifi = () => {
         fill: "black",
         strokeWidth: 0.075,
         lineCap: "round",
-    }).group({}, (g) => [...Array(3).keys()]
-        .reduce((g, i) => g.arc({
+    })
+        .repeat(3, (g, n) => g.arc({
         center: { x: 0, y: height / 2 },
-        radius: height - (height / 3) * i,
+        radius: height - (height / 3) * n,
         start: -angle,
         end: Math.PI + angle,
         counterclockwise: true,
-    }), g)
-        .circle({ center: { x: 0, y: height / 2 }, radius: 0.04 }));
+    }))
+        .circle({ center: { x: 0, y: height / 2 }, radius: 0.04 });
 };
 //# sourceMappingURL=index.js.map

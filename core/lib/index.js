@@ -8,6 +8,7 @@ const wrap = (rootGroup, options) => {
         rect: manipulator(rootGroup.rect),
         circle: manipulator(rootGroup.circle),
         arc: manipulator(rootGroup.arc),
+        repeat: manipulator(rootGroup.repeat),
         options,
         components: rootGroup.data.components,
     };
