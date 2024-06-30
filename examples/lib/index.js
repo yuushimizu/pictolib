@@ -30,4 +30,22 @@ export const wifi = () => {
     }))
         .circle({ center: { x: 0, y: height / 2 }, radius: 0.04 });
 };
+export const star = () => {
+    const spikes = 5;
+    const angle = (Math.PI * 2) / (spikes * 2);
+    const point = (angle, length) => ({
+        x: length * Math.cos(angle - Math.PI / 2),
+        y: length * Math.sin(angle - Math.PI / 2),
+    });
+    return create({
+        viewBox: { x: -100, y: -100, width: 200, height: 200 },
+        stroke: "black",
+        fill: "yellow",
+        strokeWidth: 5,
+        lineJoin: "round",
+    }).path((p) => p
+        .move(point(0, 90))
+        .repeat(spikes, (p, n) => p.lineTo(point(angle * (n * 2 + 1), 40)).lineTo(point(angle * ((n + 1) * 2), 90)))
+        .close());
+};
 //# sourceMappingURL=index.js.map

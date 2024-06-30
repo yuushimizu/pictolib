@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import { type Picto } from "pictolib";
 import { renderAsSVG } from "pictolib-svg-renderer";
-import { battery, wifi } from "pictolib-examples";
+import { battery, wifi, star } from "pictolib-examples";
 
 const outputDir = path.join(new URL(".", import.meta.url).pathname, "..", "output");
 
@@ -22,3 +22,5 @@ for (let level = 0; level <= 3; ++level) {
 }
 
 save(wifi(), "wifi");
+
+save(star(), "star");

@@ -1,5 +1,5 @@
 import { type Picto } from "pictolib";
-import { battery, wifi } from "pictolib-examples";
+import { battery, wifi, star } from "pictolib-examples";
 import { drawToCanvas } from "pictolib-canvas-renderer";
 import "./style.css";
 
@@ -23,3 +23,5 @@ for (let level = 0; level <= 3; ++level) {
 }
 
 add(wifi());
+
+add(star());

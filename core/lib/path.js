@@ -1,16 +1,20 @@
 import { addComponent } from "./picto-data.js";
-const moveLine = (type, command, point) => ({
-    ...point,
-    type,
+const moveLine = (command, point) => ({
     d: `${command}${String(point.x)},${String(point.y)}`,
 });
-const createBuilder = (commands) => ({
-    commands,
-    move: (point) => createBuilder([...commands, moveLine("moveBy", "m", point)]),
-    moveTo: (point) => createBuilder([...commands, moveLine("moveTo", "M", point)]),
-    line: (point) => createBuilder([...commands, moveLine("lineBy", "l", point)]),
-    lineTo: (point) => createBuilder([...commands, moveLine("lineTo", "L", point)]),
-});
+const createBuilder = (commands) => {
+    const add = (command) => createBuilder([...commands, command]);
+    const builder = {
+        commands,
+        move: (point) => add(moveLine("m", point)),
+        moveTo: (point) => add(moveLine("M", point)),
+        line: (point) => add(moveLine("l", point)),
+        lineTo: (point) => add(moveLine("L", point)),
+        close: () => add({ d: "Z" }),
+        repeat: (times, f) => [...Array(times).keys()].reduce((builder, n) => f(builder, n), builder),
+    };
+    return builder;
+};
 export const path = (data, build) => {
     const commands = build(createBuilder([])).commands;
     return addComponent(data, {
