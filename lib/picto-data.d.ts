@@ -2,7 +2,7 @@ import { type TransformBuilder } from "./transform.js";
 export type SVGAttributes = Readonly<Record<string, string | number>>;
 export type SVGElement = readonly [string, SVGAttributes, readonly SVGElement[]] | readonly [string, SVGAttributes];
 export type PictoComponent = Readonly<{
-    svg: () => SVGElement;
+    svg: () => readonly SVGElement[];
 }>;
 export type PictoData = Readonly<{
     components: readonly PictoComponent[];

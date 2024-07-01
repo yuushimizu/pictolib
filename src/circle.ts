@@ -14,5 +14,5 @@ export const circle = (
     }>
 ): PictoData =>
   addComponent(data, {
-    svg: () => ["circle", { cx: center.x, cy: center.y, r: radius, ...svgRenderingAttributes(restParams) }],
+    svg: () => [["circle", { cx: center.x, cy: center.y, r: radius, ...svgRenderingAttributes(restParams) }]],
   });

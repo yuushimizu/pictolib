@@ -1,11 +1,11 @@
 import { XMLBuilder } from "fast-xml-parser";
 import { type Rect } from "./coord.js";
-import { type SVGElement, svgRenderingAttributes } from "./picto-data.js";
-import { type PictoGroup, type PictoGroupOptions, type GroupManipulators, create as createGroup } from "./group.js";
+import { type RenderingAttributes, type SVGElement, svgRenderingAttributes } from "./picto-data.js";
+import { type PictoFragment, type FragmentManipulators, create as createGroup } from "./fragment.js";
 
-export { type PictoGroup } from "./group.js";
+export { type PictoFragment } from "./fragment.js";
 
-export type PictoOptions = PictoGroupOptions &
+export type PictoOptions = RenderingAttributes &
   Readonly<
     Partial<{
       viewBox: Rect;
@@ -13,12 +13,11 @@ export type PictoOptions = PictoGroupOptions &
   >;
 
 type Manipulators = Readonly<{
-  [K in keyof GroupManipulators]: (...args: Parameters<GroupManipulators[K]>) => Picto;
+  [K in keyof FragmentManipulators]: (...args: Parameters<FragmentManipulators[K]>) => Picto;
 }>;
 
 export type Picto = Manipulators &
   Readonly<{
-    repeat: (...args: Parameters<PictoGroup["repeat"]>) => Picto;
     svg: () => string;
   }>;
 
@@ -34,7 +33,7 @@ const buildSVGElement = ([name, attributes, children]: SVGElement): XMLBuilderEl
   ),
 });
 
-const buildSVG = (rootGroup: PictoGroup, { viewBox, ...restOptions }: PictoOptions): string => {
+const buildSVG = (root: PictoFragment, { viewBox, ...restOptions }: PictoOptions): string => {
   return `<?xml version="1.0"?>${String(
     new XMLBuilder({ ignoreAttributes: false, preserveOrder: true }).build([
       buildSVGElement([
@@ -46,26 +45,27 @@ const buildSVG = (rootGroup: PictoGroup, { viewBox, ...restOptions }: PictoOptio
             : {}),
           ...svgRenderingAttributes(restOptions),
         },
-        rootGroup.components.map((component) => component.svg()),
+        root.svg(),
       ]),
     ])
   )}`;
 };
 
-const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
+const wrap = (root: PictoFragment, options: PictoOptions): Picto => {
   const manipulator =
-    <F extends (...args: A) => PictoGroup, A extends readonly unknown[] = Parameters<F>>(f: F) =>
+    <F extends (...args: A) => PictoFragment, A extends readonly unknown[] = Parameters<F>>(f: F) =>
     (...args: A) =>
       wrap(f(...args), options);
   return {
-    group: manipulator(rootGroup.group),
-    path: manipulator(rootGroup.path),
-    rect: manipulator(rootGroup.rect),
-    circle: manipulator(rootGroup.circle),
-    arc: manipulator(rootGroup.arc),
-    mask: manipulator(rootGroup.mask),
-    repeat: manipulator(rootGroup.repeat),
-    svg: () => buildSVG(rootGroup, options),
+    fragment: manipulator(root.fragment),
+    group: manipulator(root.group),
+    path: manipulator(root.path),
+    rect: manipulator(root.rect),
+    circle: manipulator(root.circle),
+    arc: manipulator(root.arc),
+    mask: manipulator(root.mask),
+    repeat: manipulator(root.repeat),
+    svg: () => buildSVG(root, options),
   };
 };
 

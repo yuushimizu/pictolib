@@ -39,6 +39,6 @@ export const path = (
 ): PictoData => {
   const commands = build(createBuilder([])).commands;
   return addComponent(data, {
-    svg: () => ["path", { d: commands.map((command) => command.d).join(" "), ...svgRenderingAttributes(params) }],
+    svg: () => [["path", { d: commands.map((command) => command.d).join(" "), ...svgRenderingAttributes(params) }]],
   });
 };

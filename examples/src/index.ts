@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { type Picto, type PictoGroup, create } from "pictolib";
+import { type Picto, type PictoFragment, create } from "pictolib";
 
 const outputDir = path.join(new URL(".", import.meta.url).pathname, "..", "output");
 
@@ -28,8 +28,8 @@ for (let level = 0; level <= 3; ++level) {
       .rect({ origin: { x: -0.24, y: -0.85 }, size: { width: 0.48, height: 0.1 }, fill: lineColor })
       .rect({ origin: { x: -0.6, y: -0.7 }, size: { width: 1.2, height: 1.55 }, round: 0.1 })
       .group({ stroke: "transparent", fill: ["", "#e66", "#ea4", "#8d2"][level] }, (g) =>
-        g.repeat(level, (g, n) =>
-          g.rect({ origin: { x: -0.45, y: 0.35 - n * 0.45 }, size: { width: 0.9, height: 0.35 } })
+        g.repeat(level, (f, n) =>
+          f.rect({ origin: { x: -0.45, y: 0.35 - n * 0.45 }, size: { width: 0.9, height: 0.35 } })
         )
       )
   );
@@ -42,13 +42,13 @@ for (let level = 0; level <= 3; ++level) {
     "wifi",
     create({
       viewBox: { origin: { x: -0.5, y: -0.5 }, size: { width: 1, height: 1 } },
-      stroke: "black",
+      stroke: "#333",
       fill: "transparent",
       strokeWidth: 0.075,
       lineCap: "round",
     })
-      .repeat(3, (g, n) =>
-        g.arc({
+      .repeat(3, (f, n) =>
+        f.arc({
           center: { x: 0, y: height / 2 },
           radius: height - (height / 3) * n,
           start: -angle,
@@ -56,18 +56,18 @@ for (let level = 0; level <= 3; ++level) {
           counterclockwise: true,
         })
       )
-      .circle({ center: { x: 0, y: height / 2 }, radius: 0.04, fill: "black" })
+      .circle({ center: { x: 0, y: height / 2 }, radius: 0.04, fill: "#333" })
   );
 }
 
-const star = (g: PictoGroup) => {
+const star = (f: PictoFragment) => {
   const spikes = 5;
   const angle = (Math.PI * 2) / (spikes * 2);
   const point = (angle: number, length: number) => ({
     x: length * Math.cos(angle - Math.PI / 2),
     y: length * Math.sin(angle - Math.PI / 2),
   });
-  return g.path({}, (p) =>
+  return f.path({}, (p) =>
     p
       .move(point(0, 90))
       .repeat(spikes, (p, n) => p.lineTo(point(angle * (n * 2 + 1), 50)).lineTo(point(angle * ((n + 1) * 2), 90)))
@@ -84,7 +84,7 @@ const star = (g: PictoGroup) => {
       fill: "yellow",
       strokeWidth: 5,
       lineJoin: "round",
-    }).group({}, star)
+    }).fragment(star)
   );
 }
 
@@ -95,19 +95,19 @@ save(
     stroke: "transparent",
     fill: "rgba(64, 64, 64, 0.5)",
     transform: (t) => t.rotate(-10).skewX(40).scale({ x: 1, y: 0.5 }),
-  }).group({}, star)
+  }).fragment(star)
 );
 
 {
-  const pileus = (g: PictoGroup) =>
-    g.arc({ center: { x: 0, y: 0 }, radius: 9, start: -Math.PI, end: 0, counterclockwise: false });
+  const pileus = (f: PictoFragment) =>
+    f.arc({ center: { x: 0, y: 0 }, radius: 9, start: -Math.PI, end: 0, counterclockwise: false });
   save(
     "mushroom",
     create({ viewBox: { origin: { x: -10, y: -10 }, size: { width: 20, height: 20 } }, stroke: "transparent" })
       .group({ fill: "red" }, pileus)
       .rect({ origin: { x: -3, y: 0 }, size: { width: 6, height: 9 }, fill: "orange" })
       .mask(
-        (g) => g.group({ fill: "white" }, pileus),
+        (m) => m.group({ stroke: "white", fill: "white", strokeWidth: 0.006 }, pileus),
         (g) =>
           g.group({ fill: "#ffc" }, (g) => {
             const radius = 2;
