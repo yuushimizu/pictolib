@@ -1,34 +1,22 @@
 {
   "private": true,
-  "name": "pictolib-examples",
+  "name": "pictolib-svg-examples",
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": [
-          "./lib/index.d.ts"
-        ],
-        "default": [
-          "./lib/index.js"
-        ]
-      }
-    }
-  },
-  "types": "lib/index.d.ts",
   "scripts": {
-    "build": "npx tsc",
-    "dev": "npx tsc -w"
+    "start": "npx node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "pictolib": "file:../",
+    "@types/node": "^20.14.5"
+  },
   "devDependencies": {
-    "@eslint/js": "^9.5.0",
-    "@types/eslint__js": "^8.42.3",
-    "eslint": "^8.57.0",
-    "typescript": "^5.5.2",
-    "typescript-eslint": "^7.14.1"
+    "@swc-node/register": "^1.9.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
   }
 }
