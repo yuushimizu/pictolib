@@ -1,3 +1,4 @@
+import { type TransformBuilder } from "./transform.js";
 export type SVGAttributes = Readonly<Record<string, string | number>>;
 export type SVGElement = readonly [string, SVGAttributes, readonly SVGElement[]] | readonly [string, SVGAttributes];
 export type PictoComponent = Readonly<{
@@ -14,5 +15,6 @@ export type RenderingAttributes = Readonly<Partial<{
     strokeWidth: number;
     lineCap: string;
     lineJoin: string;
+    transform: (transform: TransformBuilder) => TransformBuilder;
 }>>;
-export declare const svgRenderingAttributes: (options: RenderingAttributes) => SVGAttributes;
+export declare const svgRenderingAttributes: (attributes: RenderingAttributes) => SVGAttributes;

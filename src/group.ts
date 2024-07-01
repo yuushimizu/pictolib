@@ -61,5 +61,4 @@ const wrap = (data: PictoData, options: PictoGroupOptions): PictoGroup => {
   return newGroup;
 };
 
-export const create = (options: PictoGroupOptions | undefined = undefined): PictoGroup =>
-  wrap(emptyData, options ?? {});
+export const create = (options?: PictoGroupOptions): PictoGroup => wrap(emptyData, options ?? {});

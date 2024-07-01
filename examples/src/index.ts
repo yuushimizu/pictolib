@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { type Picto, create } from "pictolib";
+import { type Picto, type PictoGroup, create } from "pictolib";
 
 const outputDir = path.join(new URL(".", import.meta.url).pathname, "..", "output");
 
@@ -58,13 +58,22 @@ for (let level = 0; level <= 3; ++level) {
   );
 }
 
-{
+const star = (g: PictoGroup) => {
   const spikes = 5;
   const angle = (Math.PI * 2) / (spikes * 2);
   const point = (angle: number, length: number) => ({
     x: length * Math.cos(angle - Math.PI / 2),
     y: length * Math.sin(angle - Math.PI / 2),
   });
+  return g.path({}, (p) =>
+    p
+      .move(point(0, 90))
+      .repeat(spikes, (p, n) => p.lineTo(point(angle * (n * 2 + 1), 50)).lineTo(point(angle * ((n + 1) * 2), 90)))
+      .close()
+  );
+};
+
+{
   save(
     "star",
     create({
@@ -73,11 +82,16 @@ for (let level = 0; level <= 3; ++level) {
       fill: "yellow",
       strokeWidth: 5,
       lineJoin: "round",
-    }).path({}, (p) =>
-      p
-        .move(point(0, 90))
-        .repeat(spikes, (p, n) => p.lineTo(point(angle * (n * 2 + 1), 50)).lineTo(point(angle * ((n + 1) * 2), 90)))
-        .close()
-    )
+    }).group({}, star)
   );
 }
+
+save(
+  "star-shadow",
+  create({
+    viewBox: { x: -100, y: -100, width: 200, height: 200 },
+    stroke: "transparent",
+    fill: "rgba(64, 64, 64, 0.5)",
+    transform: (t) => t.rotate(-10).skewX(40).scale({ x: 1, y: 0.5 }),
+  }).group({}, star)
+);

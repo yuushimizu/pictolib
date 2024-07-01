@@ -19,5 +19,5 @@ export type PictoGroup = GroupManipulators & Readonly<{
     repeat: (times: number, f: (group: PictoGroup, n: number) => PictoGroup) => PictoGroup;
 }>;
 declare const group: (data: PictoData, options: PictoGroupOptions, builder: (group: PictoGroup) => PictoGroup) => PictoData;
-export declare const create: (options?: PictoGroupOptions | undefined) => PictoGroup;
+export declare const create: (options?: PictoGroupOptions) => PictoGroup;
 export {};

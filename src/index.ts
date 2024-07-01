@@ -3,6 +3,8 @@ import { type Rect } from "./coord.js";
 import { type SVGElement, svgRenderingAttributes } from "./picto-data.js";
 import { type PictoGroup, type PictoGroupOptions, type GroupManipulators, create as createGroup } from "./group.js";
 
+export { type PictoGroup } from "./group.js";
+
 export type PictoOptions = PictoGroupOptions &
   Readonly<
     Partial<{
@@ -64,4 +66,4 @@ const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
   };
 };
 
-export const create = (options: PictoOptions | undefined = undefined): Picto => wrap(createGroup(), options ?? {});
+export const create = (options?: PictoOptions): Picto => wrap(createGroup(), options ?? {});

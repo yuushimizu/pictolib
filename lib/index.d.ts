@@ -1,5 +1,6 @@
 import { type Rect } from "./coord.js";
 import { type PictoGroup, type PictoGroupOptions, type GroupManipulators } from "./group.js";
+export { type PictoGroup } from "./group.js";
 export type PictoOptions = PictoGroupOptions & Readonly<Partial<{
     viewBox: Rect;
 }>>;
@@ -10,5 +11,4 @@ export type Picto = Manipulators & Readonly<{
     repeat: (...args: Parameters<PictoGroup["repeat"]>) => Picto;
     svg: () => string;
 }>;
-export declare const create: (options?: PictoOptions | undefined) => Picto;
-export {};
+export declare const create: (options?: PictoOptions) => Picto;

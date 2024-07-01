@@ -1,3 +1,5 @@
+import { type TransformBuilder, create as createTransform } from "./transform.js";
+
 export type SVGAttributes = Readonly<Record<string, string | number>>;
 
 export type SVGElement = readonly [string, SVGAttributes, readonly SVGElement[]] | readonly [string, SVGAttributes];
@@ -24,17 +26,19 @@ export type RenderingAttributes = Readonly<
     strokeWidth: number;
     lineCap: string;
     lineJoin: string;
+    transform: (transform: TransformBuilder) => TransformBuilder;
   }>
 >;
 
-export const svgRenderingAttributes = (options: RenderingAttributes): SVGAttributes => {
+export const svgRenderingAttributes = (attributes: RenderingAttributes): SVGAttributes => {
   const attribute = <T>(key: string, value: T | undefined, f: (value: T) => string | number = String) =>
     value != undefined ? { [key]: f(value) } : {};
   return {
-    ...attribute("stroke", options.stroke),
-    ...attribute("fill", options.fill),
-    ...attribute("stroke-width", options.strokeWidth),
-    ...attribute("stroke-linecap", options.lineCap),
-    ...attribute("stroke-linejoin", options.lineJoin),
+    ...attribute("stroke", attributes.stroke),
+    ...attribute("fill", attributes.fill),
+    ...attribute("stroke-width", attributes.strokeWidth),
+    ...attribute("stroke-linecap", attributes.lineCap),
+    ...attribute("stroke-linejoin", attributes.lineJoin),
+    ...attribute("transform", attributes.transform, (transform) => transform(createTransform()).svg()),
   };
 };

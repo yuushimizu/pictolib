@@ -14,8 +14,8 @@ export type PathBuilder = Readonly<
   }
 >;
 
-const moveLine = (command: string, point: Coord): PathCommand => ({
-  d: `${command}${String(point.x)},${String(point.y)}`,
+const moveLine = (command: string, { x, y }: Coord): PathCommand => ({
+  d: `${command}${String(x)},${String(y)}`,
 });
 
 const createBuilder = (commands: readonly PathCommand[]): PathBuilder => {
