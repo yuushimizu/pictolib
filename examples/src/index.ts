@@ -25,7 +25,7 @@ for (let level = 0; level <= 3; ++level) {
       fill: "transparent",
       strokeWidth: 0.1,
     })
-      .group({ fill: lineColor }, (g) => g.rect({ x: -0.24, y: -0.85, width: 0.48, height: 0.1 }))
+      .rect({ x: -0.24, y: -0.85, width: 0.48, height: 0.1, fill: lineColor })
       .rect({ x: -0.6, y: -0.7, width: 1.2, height: 1.55, round: 0.1 })
       .group({ stroke: "transparent", fill: ["", "#e66", "#ea4", "#8d2"][level] }, (g) =>
         g.repeat(level, (g, n) => g.rect({ x: -0.45, y: 0.35 - n * 0.45, width: 0.9, height: 0.35 }))
@@ -54,7 +54,7 @@ for (let level = 0; level <= 3; ++level) {
           counterclockwise: true,
         })
       )
-      .group({ fill: "black" }, (g) => g.circle({ center: { x: 0, y: height / 2 }, radius: 0.04 }))
+      .circle({ center: { x: 0, y: height / 2 }, radius: 0.04, fill: "black" })
   );
 }
 
@@ -73,7 +73,7 @@ for (let level = 0; level <= 3; ++level) {
       fill: "yellow",
       strokeWidth: 5,
       lineJoin: "round",
-    }).path((p) =>
+    }).path({}, (p) =>
       p
         .move(point(0, 90))
         .repeat(spikes, (p, n) => p.lineTo(point(angle * (n * 2 + 1), 50)).lineTo(point(angle * ((n + 1) * 2), 90)))

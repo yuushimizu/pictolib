@@ -1,4 +1,4 @@
-import { type PictoData, addComponent } from "./picto-data.js";
+import { type PictoData, type RenderingAttributes, addComponent, svgRenderingAttributes } from "./picto-data.js";
 import { type Coord } from "./coord.js";
 
 type PathCommand = Readonly<{ d: string }>;
@@ -32,9 +32,13 @@ const createBuilder = (commands: readonly PathCommand[]): PathBuilder => {
   return builder;
 };
 
-export const path = (data: PictoData, build: (builder: PathBuilder) => PathBuilder): PictoData => {
+export const path = (
+  data: PictoData,
+  params: RenderingAttributes,
+  build: (builder: PathBuilder) => PathBuilder
+): PictoData => {
   const commands = build(createBuilder([])).commands;
   return addComponent(data, {
-    svg: () => ["path", { d: commands.map((command) => command.d).join(" ") }],
+    svg: () => ["path", { d: commands.map((command) => command.d).join(" "), ...svgRenderingAttributes(params) }],
   });
 };

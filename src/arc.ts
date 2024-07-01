@@ -1,4 +1,4 @@
-import { type PictoData, addComponent } from "./picto-data.js";
+import { type PictoData, type RenderingAttributes, addComponent, svgRenderingAttributes } from "./picto-data.js";
 import { type Coord, normalizeAngle } from "./coord.js";
 
 export const arc = (
@@ -9,13 +9,15 @@ export const arc = (
     start,
     end,
     counterclockwise,
-  }: Readonly<{
-    center: Coord;
-    radius: number;
-    start: number;
-    end: number;
-    counterclockwise?: boolean;
-  }>
+    ...restParams
+  }: RenderingAttributes &
+    Readonly<{
+      center: Coord;
+      radius: number;
+      start: number;
+      end: number;
+      counterclockwise?: boolean;
+    }>
 ): PictoData =>
   addComponent(data, {
     svg: () => [
@@ -28,6 +30,7 @@ export const arc = (
         )},${String(counterclockwise ?? true ? 0 : 1)},${String(center.x + radius * Math.cos(end))},${String(
           center.y + radius * Math.sin(end)
         )}`,
+        ...svgRenderingAttributes(restParams),
       },
     ],
   });

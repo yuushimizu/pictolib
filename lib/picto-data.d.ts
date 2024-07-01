@@ -8,3 +8,11 @@ export type PictoData = Readonly<{
 }>;
 export declare const emptyData: PictoData;
 export declare const addComponent: (data: PictoData, component: PictoComponent) => PictoData;
+export type RenderingAttributes = Readonly<Partial<{
+    stroke: string;
+    fill: string;
+    strokeWidth: number;
+    lineCap: string;
+    lineJoin: string;
+}>>;
+export declare const svgRenderingAttributes: (options: RenderingAttributes) => SVGAttributes;

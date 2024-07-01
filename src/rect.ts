@@ -1,4 +1,4 @@
-import { type PictoData, addComponent } from "./picto-data.js";
+import { type PictoData, type RenderingAttributes, addComponent, svgRenderingAttributes } from "./picto-data.js";
 import { type Rect, type Coord } from "./coord.js";
 
 export const rect = (
@@ -9,7 +9,9 @@ export const rect = (
     width,
     height,
     round,
-  }: Rect &
+    ...restParams
+  }: RenderingAttributes &
+    Rect &
     Readonly<{
       round?: Partial<Coord> | number;
     }>
@@ -30,6 +32,7 @@ export const rect = (
               ...(round.x == undefined ? {} : { rx: round.x }),
               ...(round.y == undefined ? {} : { ry: round.y }),
             }),
+        ...svgRenderingAttributes(restParams),
       },
     ],
   });

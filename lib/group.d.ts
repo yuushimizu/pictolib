@@ -1,15 +1,9 @@
-import { type PictoData, type SVGAttributes } from "./picto-data.js";
+import { type PictoData, type RenderingAttributes } from "./picto-data.js";
 import { path } from "./path.js";
 import { rect } from "./rect.js";
 import { circle } from "./circle.js";
 import { arc } from "./arc.js";
-export type PictoGroupOptions = Readonly<Partial<{
-    stroke: string;
-    fill: string;
-    strokeWidth: number;
-    lineCap: string;
-    lineJoin: string;
-}>>;
+export type PictoGroupOptions = RenderingAttributes;
 type ManipulatorFunctions = Readonly<{
     group: typeof group;
     path: typeof path;
@@ -17,14 +11,13 @@ type ManipulatorFunctions = Readonly<{
     circle: typeof circle;
     arc: typeof arc;
 }>;
-export type PictoGroupManipulators = Readonly<{
+export type GroupManipulators = Readonly<{
     [K in keyof ManipulatorFunctions]: (...args: Parameters<ManipulatorFunctions[K]> extends readonly [PictoData, ...infer R] ? R : never) => PictoGroup;
 }>;
-export type PictoGroup = PictoGroupManipulators & Readonly<{
+export type PictoGroup = GroupManipulators & Readonly<{
     data: PictoData;
     repeat: (times: number, f: (group: PictoGroup, n: number) => PictoGroup) => PictoGroup;
 }>;
-export declare const groupOptionsSVGAttributes: (options: PictoGroupOptions) => SVGAttributes;
 declare const group: (data: PictoData, options: PictoGroupOptions, builder: (group: PictoGroup) => PictoGroup) => PictoData;
 export declare const create: (options?: PictoGroupOptions | undefined) => PictoGroup;
 export {};
