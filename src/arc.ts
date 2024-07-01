@@ -26,8 +26,8 @@ export const arc = (
         d: `M ${String(center.x + radius * Math.cos(start))},${String(center.y + radius * Math.sin(start))} A ${String(
           radius
         )},${String(radius)},0,${String(
-          normalizeAngle(counterclockwise ?? true ? start - end : end - start) > Math.PI ? 1 : 0
-        )},${String(counterclockwise ?? true ? 0 : 1)},${String(center.x + radius * Math.cos(end))},${String(
+          normalizeAngle(counterclockwise ? start - end : end - start) > Math.PI ? 1 : 0
+        )},${String(counterclockwise ? 0 : 1)},${String(center.x + radius * Math.cos(end))},${String(
           center.y + radius * Math.sin(end)
         )}`,
         ...svgRenderingAttributes(restParams),

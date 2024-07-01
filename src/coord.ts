@@ -8,7 +8,10 @@ export type Size = Readonly<{
   height: number;
 }>;
 
-export type Rect = Coord & Size;
+export type Rect = Readonly<{
+  origin: Coord;
+  size: Size;
+}>;
 
 export const normalizeAngle = (angle: number): number => {
   let result = angle;

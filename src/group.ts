@@ -1,5 +1,6 @@
 import {
   type PictoData,
+  type PictoComponent,
   type RenderingAttributes,
   emptyData,
   addComponent,
@@ -9,6 +10,7 @@ import { path } from "./path.js";
 import { rect } from "./rect.js";
 import { circle } from "./circle.js";
 import { arc } from "./arc.js";
+import { mask } from "./mask.js";
 
 export type PictoGroupOptions = RenderingAttributes;
 
@@ -18,6 +20,7 @@ type ManipulatorFunctions = Readonly<{
   rect: typeof rect;
   circle: typeof circle;
   arc: typeof arc;
+  mask: typeof mask;
 }>;
 
 export type GroupManipulators = Readonly<{
@@ -28,14 +31,14 @@ export type GroupManipulators = Readonly<{
 
 export type PictoGroup = GroupManipulators &
   Readonly<{
-    data: PictoData;
+    components: readonly PictoComponent[];
     repeat: (times: number, f: (group: PictoGroup, n: number) => PictoGroup) => PictoGroup;
   }>;
 
 const group = (data: PictoData, options: PictoGroupOptions, builder: (group: PictoGroup) => PictoGroup): PictoData => {
   const group = builder(create());
   return addComponent(data, {
-    svg: () => ["g", svgRenderingAttributes(options), group.data.components.map((component) => component.svg())],
+    svg: () => ["g", svgRenderingAttributes(options), group.components.map((component) => component.svg())],
   });
 };
 
@@ -55,8 +58,9 @@ const wrap = (data: PictoData, options: PictoGroupOptions): PictoGroup => {
     rect: manipulator(rect),
     circle: manipulator(circle),
     arc: manipulator(arc),
+    mask: manipulator(mask),
     repeat: (times, f) => [...Array(times).keys()].reduce((group, n) => f(group, n), newGroup),
-    data,
+    components: data.components,
   };
   return newGroup;
 };

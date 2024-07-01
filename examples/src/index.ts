@@ -20,15 +20,17 @@ for (let level = 0; level <= 3; ++level) {
   save(
     `battery${String(level)}`,
     create({
-      viewBox: { x: -1, y: -1, width: 2, height: 2 },
+      viewBox: { origin: { x: -1, y: -1 }, size: { width: 2, height: 2 } },
       stroke: lineColor,
       fill: "transparent",
       strokeWidth: 0.1,
     })
-      .rect({ x: -0.24, y: -0.85, width: 0.48, height: 0.1, fill: lineColor })
-      .rect({ x: -0.6, y: -0.7, width: 1.2, height: 1.55, round: 0.1 })
+      .rect({ origin: { x: -0.24, y: -0.85 }, size: { width: 0.48, height: 0.1 }, fill: lineColor })
+      .rect({ origin: { x: -0.6, y: -0.7 }, size: { width: 1.2, height: 1.55 }, round: 0.1 })
       .group({ stroke: "transparent", fill: ["", "#e66", "#ea4", "#8d2"][level] }, (g) =>
-        g.repeat(level, (g, n) => g.rect({ x: -0.45, y: 0.35 - n * 0.45, width: 0.9, height: 0.35 }))
+        g.repeat(level, (g, n) =>
+          g.rect({ origin: { x: -0.45, y: 0.35 - n * 0.45 }, size: { width: 0.9, height: 0.35 } })
+        )
       )
   );
 }
@@ -39,7 +41,7 @@ for (let level = 0; level <= 3; ++level) {
   save(
     "wifi",
     create({
-      viewBox: { x: -0.5, y: -0.5, width: 1, height: 1 },
+      viewBox: { origin: { x: -0.5, y: -0.5 }, size: { width: 1, height: 1 } },
       stroke: "black",
       fill: "transparent",
       strokeWidth: 0.075,
@@ -77,7 +79,7 @@ const star = (g: PictoGroup) => {
   save(
     "star",
     create({
-      viewBox: { x: -100, y: -100, width: 200, height: 200 },
+      viewBox: { origin: { x: -100, y: -100 }, size: { width: 200, height: 200 } },
       stroke: "black",
       fill: "yellow",
       strokeWidth: 5,
@@ -89,9 +91,33 @@ const star = (g: PictoGroup) => {
 save(
   "star-shadow",
   create({
-    viewBox: { x: -100, y: -100, width: 200, height: 200 },
+    viewBox: { origin: { x: -100, y: -100 }, size: { width: 200, height: 200 } },
     stroke: "transparent",
     fill: "rgba(64, 64, 64, 0.5)",
     transform: (t) => t.rotate(-10).skewX(40).scale({ x: 1, y: 0.5 }),
   }).group({}, star)
 );
+
+{
+  const pileus = (g: PictoGroup) =>
+    g.arc({ center: { x: 0, y: 0 }, radius: 9, start: -Math.PI, end: 0, counterclockwise: false });
+  save(
+    "mushroom",
+    create({ viewBox: { origin: { x: -10, y: -10 }, size: { width: 20, height: 20 } }, stroke: "transparent" })
+      .group({ fill: "red" }, pileus)
+      .rect({ origin: { x: -3, y: 0 }, size: { width: 6, height: 9 }, fill: "orange" })
+      .mask(
+        (g) => g.group({ fill: "white" }, pileus),
+        (g) =>
+          g.group({ fill: "#ffc" }, (g) => {
+            const radius = 2;
+            return g
+              .circle({ center: { x: 0, y: -3 }, radius })
+              .circle({ center: { x: -7, y: -3 }, radius })
+              .circle({ center: { x: 7, y: -3 }, radius })
+              .circle({ center: { x: -3, y: -8 }, radius })
+              .circle({ center: { x: 3, y: -8 }, radius });
+          })
+      )
+  );
+}

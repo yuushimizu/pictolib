@@ -4,10 +4,8 @@ import { type Rect, type Coord } from "./coord.js";
 export const rect = (
   data: PictoData,
   {
-    x,
-    y,
-    width,
-    height,
+    origin: { x, y },
+    size: { width, height },
     round,
     ...restParams
   }: RenderingAttributes &

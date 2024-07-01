@@ -41,10 +41,12 @@ const buildSVG = (rootGroup: PictoGroup, { viewBox, ...restOptions }: PictoOptio
         "svg",
         {
           xmlns: "http://www.w3.org/2000/svg",
-          ...(viewBox ? { viewBox: [viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(" ") } : {}),
+          ...(viewBox
+            ? { viewBox: [viewBox.origin.x, viewBox.origin.y, viewBox.size.width, viewBox.size.height].join(" ") }
+            : {}),
           ...svgRenderingAttributes(restOptions),
         },
-        rootGroup.data.components.map((component) => component.svg()),
+        rootGroup.components.map((component) => component.svg()),
       ]),
     ])
   )}`;
@@ -61,6 +63,7 @@ const wrap = (rootGroup: PictoGroup, options: PictoOptions): Picto => {
     rect: manipulator(rootGroup.rect),
     circle: manipulator(rootGroup.circle),
     arc: manipulator(rootGroup.arc),
+    mask: manipulator(rootGroup.mask),
     repeat: manipulator(rootGroup.repeat),
     svg: () => buildSVG(rootGroup, options),
   };
