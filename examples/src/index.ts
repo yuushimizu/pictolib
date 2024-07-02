@@ -100,24 +100,47 @@ save(
 
 {
   const pileus = (f: PictoFragment) =>
-    f.arc({ center: { x: 0, y: 0 }, radius: 9, start: -Math.PI, end: 0, counterclockwise: false });
+    f.path({}, (p) =>
+      p
+        .moveTo({ x: 0, y: 1 })
+        .hLineTo(6)
+        .curveTo({ x: 8.8, y: 0.9 }, { x: 9, y: 0 })
+        .curveTo({ x: 9.2, y: -0.9 }, { x: 8, y: -8.5 }, { x: 0, y: -8.5 })
+        .hLineTo(-0.5)
+        .curveTo({ x: -8, y: -8.5 }, { x: -9.2, y: -0.9 }, { x: -9, y: 0 })
+        .curveTo({ x: -8.8, y: 0.9 }, { x: -6, y: 1 })
+        .hLineTo(0)
+        .close()
+    );
+
   save(
     "mushroom",
-    create({ viewBox: { origin: { x: -10, y: -10 }, size: { width: 20, height: 20 } }, stroke: "transparent" })
-      .group({ fill: "red" }, pileus)
-      .rect({ origin: { x: -3, y: 0 }, size: { width: 6, height: 9 }, fill: "orange" })
+    create({
+      viewBox: { origin: { x: -10, y: -10 }, size: { width: 20, height: 20 } },
+      stroke: "black",
+      strokeWidth: 0.1,
+    })
+      .path({ fill: "orange" }, (p) =>
+        p
+          .moveTo({ x: -3, y: 0 })
+          .curve({ x: 2, y: 3 }, { x: -3, y: 9 }, { x: 1, y: 9 })
+          .hLine(4)
+          .curve({ x: 4, y: 0 }, { x: -1, y: -6 }, { x: 1, y: -9 })
+      )
+      .group({ stroke: "transparent", fill: "red" }, pileus)
       .mask(
-        (m) => m.group({ stroke: "white", fill: "white", strokeWidth: 0.006 }, pileus),
+        (m) => m.group({ stroke: "white", fill: "white" }, pileus),
         (g) =>
-          g.group({ fill: "#ffc" }, (g) => {
-            const radius = 2;
+          g.group({ stroke: "transparent", fill: "#ffc" }, (g) => {
+            const radius = 2.5;
             return g
-              .circle({ center: { x: 0, y: -3 }, radius })
-              .circle({ center: { x: -7, y: -3 }, radius })
-              .circle({ center: { x: 7, y: -3 }, radius })
-              .circle({ center: { x: -3, y: -8 }, radius })
-              .circle({ center: { x: 3, y: -8 }, radius });
+              .circle({ center: { x: 0, y: -2 }, radius })
+              .circle({ center: { x: -7, y: -2.5 }, radius })
+              .circle({ center: { x: 7, y: -2.5 }, radius })
+              .circle({ center: { x: -3.5, y: -7.5 }, radius })
+              .circle({ center: { x: 3.5, y: -7.5 }, radius });
           })
       )
+      .group({ fill: "transparent" }, pileus)
   );
 }

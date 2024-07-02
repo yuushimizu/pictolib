@@ -13,26 +13,40 @@ export const arc = (
   }: RenderingAttributes &
     Readonly<{
       center: Coord;
-      radius: number;
+      radius: number | Coord;
       start: number;
       end: number;
       counterclockwise?: boolean;
     }>
-): PictoData =>
-  addComponent(data, {
+): PictoData => {
+  const { x: xRadius, y: yRadius } = typeof radius === "number" ? { x: radius, y: radius } : radius;
+  return addComponent(data, {
     svg: () => [
       [
         "path",
         {
-          d: `M ${String(center.x + radius * Math.cos(start))},${String(
-            center.y + radius * Math.sin(start)
-          )} A ${String(radius)},${String(radius)},0,${String(
-            normalizeAngle(counterclockwise ? start - end : end - start) > Math.PI ? 1 : 0
-          )},${String(counterclockwise ? 0 : 1)},${String(center.x + radius * Math.cos(end))},${String(
-            center.y + radius * Math.sin(end)
-          )}`,
+          d: (
+            [
+              ["M", [center.x + xRadius * Math.cos(start), center.y + yRadius * Math.sin(start)]],
+              [
+                "A",
+                [
+                  xRadius,
+                  yRadius,
+                  0,
+                  normalizeAngle(counterclockwise ? start - end : end - start) > Math.PI ? 1 : 0,
+                  counterclockwise ? 0 : 1,
+                  center.x + xRadius * Math.cos(end),
+                  center.y + yRadius * Math.sin(end),
+                ],
+              ],
+            ] as const
+          )
+            .map(([command, args]) => `${command}${args.join(",")}`)
+            .join(" "),
           ...svgRenderingAttributes(restParams),
         },
       ],
     ],
   });
+};
