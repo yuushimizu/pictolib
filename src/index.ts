@@ -1,11 +1,11 @@
 import { XMLBuilder } from "fast-xml-parser";
 import { type Rect } from "./coord.js";
-import { type RenderingAttributes, type SVGElement, svgRenderingAttributes } from "./picto-data.js";
+import { type PresentationAttributes, type SVGElement, svgPresentationAttributes } from "./picto-data.js";
 import { type PictoFragment, type FragmentManipulators, create as createGroup } from "./fragment.js";
 
 export { type PictoFragment } from "./fragment.js";
 
-export type PictoOptions = RenderingAttributes &
+export type PictoOptions = PresentationAttributes &
   Readonly<
     Partial<{
       viewBox: Rect;
@@ -43,7 +43,7 @@ const buildSVG = (root: PictoFragment, { viewBox, ...restOptions }: PictoOptions
           ...(viewBox
             ? { viewBox: [viewBox.origin.x, viewBox.origin.y, viewBox.size.width, viewBox.size.height].join(" ") }
             : {}),
-          ...svgRenderingAttributes(restOptions),
+          ...svgPresentationAttributes(restOptions),
         },
         root.svg(),
       ]),
@@ -63,6 +63,7 @@ const wrap = (root: PictoFragment, options: PictoOptions): Picto => {
     rect: manipulator(root.rect),
     circle: manipulator(root.circle),
     arc: manipulator(root.arc),
+    ellipse: manipulator(root.ellipse),
     mask: manipulator(root.mask),
     repeat: manipulator(root.repeat),
     svg: () => buildSVG(root, options),

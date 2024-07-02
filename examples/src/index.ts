@@ -102,14 +102,12 @@ save(
   const pileus = (f: PictoFragment) =>
     f.path({}, (p) =>
       p
-        .moveTo({ x: 0, y: 1 })
-        .hLineTo(6)
+        .moveTo({ x: 6, y: 1 })
         .curveTo({ x: 8.8, y: 0.9 }, { x: 9, y: 0 })
         .curveTo({ x: 9.2, y: -0.9 }, { x: 8, y: -8.5 }, { x: 0, y: -8.5 })
         .hLineTo(-0.5)
         .curveTo({ x: -8, y: -8.5 }, { x: -9.2, y: -0.9 }, { x: -9, y: 0 })
         .curveTo({ x: -8.8, y: 0.9 }, { x: -6, y: 1 })
-        .hLineTo(0)
         .close()
     );
 
@@ -131,7 +129,7 @@ save(
       .mask(
         (m) => m.group({ stroke: "white", fill: "white" }, pileus),
         (g) =>
-          g.group({ stroke: "transparent", fill: "#ffc" }, (g) => {
+          g.group({ stroke: "transparent", fill: "white" }, (g) => {
             const radius = 2.5;
             return g
               .circle({ center: { x: 0, y: -2 }, radius })
@@ -142,5 +140,35 @@ save(
           })
       )
       .group({ fill: "transparent" }, pileus)
+  );
+}
+
+{
+  const eyeColor = "#432";
+  save(
+    "emoji-face",
+    create({
+      viewBox: { origin: { x: -100, y: -100 }, size: { width: 200, height: 200 } },
+      strokeWidth: 5,
+      lineCap: "round",
+    })
+      .circle({
+        center: { x: 0, y: 0 },
+        radius: 90,
+        stroke: "#f91",
+        fill: "#fc2",
+        fillOpacity: 0.5,
+        dasharray: [1, 1.2],
+        pathLength: 22,
+      })
+      .group({ stroke: "transparent", fill: eyeColor }, (g) => {
+        const eyeRadius = { x: 12, y: 18 };
+        const eyeCenter = { x: 34, y: -5 };
+        const mouthX = -40;
+        return g
+          .ellipse({ center: { ...eyeCenter, x: -eyeCenter.x }, radius: eyeRadius })
+          .ellipse({ center: eyeCenter, radius: eyeRadius })
+          .path({ stroke: eyeColor }, (p) => p.moveTo({ x: mouthX, y: 34 }).hLineTo(-mouthX));
+      })
   );
 }

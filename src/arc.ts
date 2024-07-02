@@ -1,4 +1,9 @@
-import { type PictoData, type RenderingAttributes, addComponent, svgRenderingAttributes } from "./picto-data.js";
+import {
+  type PictoData,
+  type ShapeStrokePresentationAttributes,
+  addComponent,
+  svgShapeStrokePresentationAttributes,
+} from "./picto-data.js";
 import { type Coord, normalizeAngle } from "./coord.js";
 
 export const arc = (
@@ -10,7 +15,7 @@ export const arc = (
     end,
     counterclockwise,
     ...restParams
-  }: RenderingAttributes &
+  }: ShapeStrokePresentationAttributes &
     Readonly<{
       center: Coord;
       radius: number | Coord;
@@ -44,7 +49,7 @@ export const arc = (
           )
             .map(([command, args]) => `${command}${args.join(",")}`)
             .join(" "),
-          ...svgRenderingAttributes(restParams),
+          ...svgShapeStrokePresentationAttributes(restParams),
         },
       ],
     ],

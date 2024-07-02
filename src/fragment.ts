@@ -3,6 +3,7 @@ import { group } from "./group.js";
 import { path } from "./path.js";
 import { rect } from "./rect.js";
 import { circle } from "./circle.js";
+import { ellipse } from "./ellipse.js";
 import { arc } from "./arc.js";
 import { mask } from "./mask.js";
 
@@ -15,6 +16,7 @@ type ManipulatorFunctions = Readonly<{
   path: typeof path;
   rect: typeof rect;
   circle: typeof circle;
+  ellipse: typeof ellipse;
   arc: typeof arc;
   mask: typeof mask;
   repeat: typeof repeat;
@@ -56,6 +58,7 @@ const wrap = (data: PictoData): PictoFragment => {
     path: manipulator(path),
     rect: manipulator(rect),
     circle: manipulator(circle),
+    ellipse: manipulator(ellipse),
     arc: manipulator(arc),
     mask: manipulator(mask),
     repeat: manipulator(repeat),

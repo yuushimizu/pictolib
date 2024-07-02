@@ -1,7 +1,7 @@
-import { type PictoData, type RenderingAttributes, addComponent, svgRenderingAttributes } from "./picto-data.js";
+import { type PictoData, type PresentationAttributes, addComponent, svgPresentationAttributes } from "./picto-data.js";
 import { type PictoFragment, create as createFragment } from "./fragment.js";
 
-export type PictoGroupOptions = RenderingAttributes;
+export type PictoGroupOptions = PresentationAttributes;
 
 export const group = (
   data: PictoData,
@@ -10,6 +10,6 @@ export const group = (
 ): PictoData => {
   const fragment = builder(createFragment());
   return addComponent(data, {
-    svg: () => [["g", svgRenderingAttributes(options), fragment.svg()]],
+    svg: () => [["g", svgPresentationAttributes(options), fragment.svg()]],
   });
 };

@@ -1,4 +1,4 @@
-import { type PictoData, type RenderingAttributes } from "./picto-data.js";
+import { type PictoData, type ShapeStrokePresentationAttributes } from "./picto-data.js";
 import { type Coord } from "./coord.js";
 type PathCommand = Readonly<{
     d: string;
@@ -22,5 +22,5 @@ export type PathBuilder = Readonly<{
     close: () => PathBuilder;
     repeat: (times: number, f: (builder: PathBuilder, n: number) => PathBuilder) => PathBuilder;
 }>;
-export declare const path: (data: PictoData, params: RenderingAttributes, build: (builder: PathBuilder) => PathBuilder) => PictoData;
+export declare const path: (data: PictoData, params: ShapeStrokePresentationAttributes, build: (builder: PathBuilder) => PathBuilder) => PictoData;
 export {};

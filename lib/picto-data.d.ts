@@ -9,12 +9,18 @@ export type PictoData = Readonly<{
 }>;
 export declare const emptyData: PictoData;
 export declare const addComponent: (data: PictoData, component: PictoComponent) => PictoData;
-export type RenderingAttributes = Readonly<Partial<{
+export type PresentationAttributes = Readonly<Partial<{
     stroke: string;
     fill: string;
+    fillOpacity: number;
     strokeWidth: number;
     lineCap: string;
     lineJoin: string;
+    dasharray: number | readonly number[];
     transform: (transform: TransformBuilder) => TransformBuilder;
 }>>;
-export declare const svgRenderingAttributes: (attributes: RenderingAttributes) => SVGAttributes;
+export declare const svgPresentationAttributes: (attributes: PresentationAttributes) => SVGAttributes;
+export type ShapeStrokePresentationAttributes = PresentationAttributes & Readonly<Partial<{
+    pathLength: number;
+}>>;
+export declare const svgShapeStrokePresentationAttributes: (attributes: ShapeStrokePresentationAttributes) => SVGAttributes;

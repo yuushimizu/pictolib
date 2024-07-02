@@ -3,6 +3,7 @@ import { group } from "./group.js";
 import { path } from "./path.js";
 import { rect } from "./rect.js";
 import { circle } from "./circle.js";
+import { ellipse } from "./ellipse.js";
 import { arc } from "./arc.js";
 import { mask } from "./mask.js";
 declare const repeat: (data: PictoData, times: number, f: (fragment: PictoFragment, n: number) => PictoFragment) => PictoFragment;
@@ -12,6 +13,7 @@ type ManipulatorFunctions = Readonly<{
     path: typeof path;
     rect: typeof rect;
     circle: typeof circle;
+    ellipse: typeof ellipse;
     arc: typeof arc;
     mask: typeof mask;
     repeat: typeof repeat;
