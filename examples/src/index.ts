@@ -121,9 +121,9 @@ save(
       .path({ fill: "orange" }, (p) =>
         p
           .moveTo({ x: -3, y: 0 })
-          .curve({ x: 2, y: 3 }, { x: -3, y: 9 }, { x: 1, y: 9 })
-          .hLine(4)
-          .curve({ x: 4, y: 0 }, { x: -1, y: -6 }, { x: 1, y: -9 })
+          .curveTo({ x: -1, y: 3 }, { x: -6, y: 9 }, { x: -2, y: 9 })
+          .hLineTo(2)
+          .curveTo({ x: 6, y: 9 }, { x: 1, y: 3 }, { x: 3, y: 0 })
       )
       .group({ stroke: "transparent", fill: "red" }, pileus)
       .mask(
