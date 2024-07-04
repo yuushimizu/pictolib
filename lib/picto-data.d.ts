@@ -9,18 +9,31 @@ export type PictoData = Readonly<{
 }>;
 export declare const emptyData: PictoData;
 export declare const addComponent: (data: PictoData, component: PictoComponent) => PictoData;
+type Percentage = `${number}%`;
+type XPosition = "left" | "right";
+type YPosition = "top" | "bottom";
+type Position = number | Percentage | XPosition | YPosition | "center";
 export type PresentationAttributes = Readonly<Partial<{
-    stroke: string;
     fill: string;
     fillOpacity: number;
+    stroke: string;
+    strokeOpacity: number;
     strokeWidth: number;
     lineCap: string;
     lineJoin: string;
+    miterlimit: number;
     dasharray: number | readonly number[];
+    dashoffset: number;
     transform: (transform: TransformBuilder) => TransformBuilder;
+    transformOrigin: Position | Readonly<{
+        x: Exclude<Position, YPosition>;
+        y: Exclude<Position, XPosition>;
+    }>;
+    style: string;
 }>>;
 export declare const svgPresentationAttributes: (attributes: PresentationAttributes) => SVGAttributes;
 export type ShapeStrokePresentationAttributes = PresentationAttributes & Readonly<Partial<{
     pathLength: number;
 }>>;
 export declare const svgShapeStrokePresentationAttributes: (attributes: ShapeStrokePresentationAttributes) => SVGAttributes;
+export {};

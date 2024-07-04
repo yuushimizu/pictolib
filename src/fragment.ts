@@ -7,8 +7,11 @@ import { ellipse } from "./ellipse.js";
 import { arc } from "./arc.js";
 import { mask } from "./mask.js";
 
-const repeat = (data: PictoData, times: number, f: (fragment: PictoFragment, n: number) => PictoFragment) =>
-  [...Array(times).keys()].reduce((fragment, n) => f(fragment, n), wrap(data));
+const repeat = (
+  data: PictoData,
+  times: number,
+  f: (fragment: PictoFragment, n: number, times: number) => PictoFragment
+) => [...Array(times).keys()].reduce((fragment, n) => f(fragment, n, times), wrap(data));
 
 type ManipulatorFunctions = Readonly<{
   fragment: typeof fragment;
@@ -30,7 +33,6 @@ export type FragmentManipulators = Readonly<{
 
 export type PictoFragment = FragmentManipulators &
   Readonly<{
-    repeat: (times: number, f: (fragment: PictoFragment, n: number) => PictoFragment) => PictoFragment;
     components: readonly PictoComponent[];
     svg: () => readonly SVGElement[];
   }>;

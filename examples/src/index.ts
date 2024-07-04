@@ -172,3 +172,29 @@ save(
       })
   );
 }
+
+{
+  const ellipse = (f: PictoFragment) =>
+    f.ellipse({
+      center: { x: 0, y: -4 },
+      radius: { x: 2, y: 6 },
+    });
+  save(
+    "colors",
+    create({
+      viewBox: { origin: { x: -11, y: -11 }, size: { width: 22, height: 22 } },
+      fill: "transparent",
+      fillOpacity: 0.5,
+    }).repeat(36, (f, n, times) => {
+      const angle = (n * 360) / times;
+      return f.group(
+        {
+          transform: (t) => t.rotate(angle),
+          fill: `hsl(${String(angle)} 100% 50%)`,
+          style: "mix-blend-mode: screen",
+        },
+        ellipse
+      );
+    })
+  );
+}

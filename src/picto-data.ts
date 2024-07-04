@@ -19,16 +19,34 @@ export const addComponent = (data: PictoData, component: PictoComponent): PictoD
   components: [...data.components, component],
 });
 
+type Percentage = `${number}%`;
+
+type XPosition = "left" | "right";
+
+type YPosition = "top" | "bottom";
+
+type Position = number | Percentage | XPosition | YPosition | "center";
+
 export type PresentationAttributes = Readonly<
   Partial<{
-    stroke: string;
     fill: string;
     fillOpacity: number;
+    stroke: string;
+    strokeOpacity: number;
     strokeWidth: number;
     lineCap: string;
     lineJoin: string;
+    miterlimit: number;
     dasharray: number | readonly number[];
+    dashoffset: number;
     transform: (transform: TransformBuilder) => TransformBuilder;
+    transformOrigin:
+      | Position
+      | Readonly<{
+          x: Exclude<Position, YPosition>;
+          y: Exclude<Position, XPosition>;
+        }>;
+    style: string;
   }>
 >;
 
@@ -36,16 +54,23 @@ const svgAttribute = <T>(key: string, value: T | undefined, f: (value: T) => str
   value != undefined ? { [key]: f(value) } : {};
 
 export const svgPresentationAttributes = (attributes: PresentationAttributes): SVGAttributes => ({
-  ...svgAttribute("stroke", attributes.stroke),
   ...svgAttribute("fill", attributes.fill),
   ...svgAttribute("fill-opacity", attributes.fillOpacity),
+  ...svgAttribute("stroke", attributes.stroke),
+  ...svgAttribute("stroke-opacity", attributes.strokeOpacity),
   ...svgAttribute("stroke-width", attributes.strokeWidth),
   ...svgAttribute("stroke-linecap", attributes.lineCap),
   ...svgAttribute("stroke-linejoin", attributes.lineJoin),
+  ...svgAttribute("stroke-miterlimit", attributes.miterlimit),
   ...svgAttribute("stroke-dasharray", attributes.dasharray, (value) =>
     (typeof value === "number" ? [value] : value).join(" ")
   ),
+  ...svgAttribute("stroke-dashoffset", attributes.dashoffset),
   ...svgAttribute("transform", attributes.transform, (transform) => transform(createTransform()).svg()),
+  ...svgAttribute("transform-origin", attributes.transformOrigin, (value) =>
+    typeof value === "string" || typeof value === "number" ? value : [value.x, value.y].join(" ")
+  ),
+  ...svgAttribute("style", attributes.style),
 });
 
 export type ShapeStrokePresentationAttributes = PresentationAttributes &

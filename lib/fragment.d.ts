@@ -6,7 +6,7 @@ import { circle } from "./circle.js";
 import { ellipse } from "./ellipse.js";
 import { arc } from "./arc.js";
 import { mask } from "./mask.js";
-declare const repeat: (data: PictoData, times: number, f: (fragment: PictoFragment, n: number) => PictoFragment) => PictoFragment;
+declare const repeat: (data: PictoData, times: number, f: (fragment: PictoFragment, n: number, times: number) => PictoFragment) => PictoFragment;
 type ManipulatorFunctions = Readonly<{
     fragment: typeof fragment;
     group: typeof group;
@@ -22,7 +22,6 @@ export type FragmentManipulators = Readonly<{
     [K in keyof ManipulatorFunctions]: (...args: Parameters<ManipulatorFunctions[K]> extends readonly [PictoData, ...infer R] ? R : never) => PictoFragment;
 }>;
 export type PictoFragment = FragmentManipulators & Readonly<{
-    repeat: (times: number, f: (fragment: PictoFragment, n: number) => PictoFragment) => PictoFragment;
     components: readonly PictoComponent[];
     svg: () => readonly SVGElement[];
 }>;
