@@ -8,8 +8,11 @@ type CallComponent = readonly [string, readonly number[]];
 
 const transformFunctions = {
   matrix: (matrix: readonly [number, number, number, number, number, number]) => ["matrix", matrix],
-  translate: ({ x, y }: Coord) => ["translate", [x, y]],
-  scale: ({ x, y }: Coord) => ["scale", [x, y]],
+  translate: ({ x, y }: Partial<Coord>) => ["translate", [x ?? 0, y ?? 0]],
+  scale: (amount: number | Partial<Coord>) => [
+    "scale",
+    typeof amount === "number" ? [amount, amount] : [amount.x ?? 1, amount.y ?? 1],
+  ],
   rotate: (angle: number, origin?: Coord) => ["rotate", [angle, ...(origin ? [origin.x, origin.y] : [])]],
   skewX: (amount: number) => ["skewX", [amount]],
   skewY: (amount: number) => ["skewY", [amount]],

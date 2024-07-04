@@ -4,8 +4,8 @@ export type Transform = Readonly<{
 }>;
 declare const transformFunctions: {
     readonly matrix: (matrix: readonly [number, number, number, number, number, number]) => [string, readonly [number, number, number, number, number, number]];
-    readonly translate: ({ x, y }: Coord) => [string, number[]];
-    readonly scale: ({ x, y }: Coord) => [string, number[]];
+    readonly translate: ({ x, y }: Partial<Coord>) => [string, number[]];
+    readonly scale: (amount: number | Partial<Coord>) => [string, number[]];
     readonly rotate: (angle: number, origin?: Coord) => [string, number[]];
     readonly skewX: (amount: number) => [string, number[]];
     readonly skewY: (amount: number) => [string, number[]];
@@ -18,14 +18,14 @@ export type TransformBuilder = Readonly<{
 }>;
 export declare const create: () => Readonly<{
     readonly matrix: (matrix: readonly [number, number, number, number, number, number]) => TransformBuilder;
-    readonly translate: (args_0: Readonly<{
+    readonly translate: (args_0: Partial<Readonly<{
         x: number;
         y: number;
-    }>) => TransformBuilder;
-    readonly scale: (args_0: Readonly<{
+    }>>) => TransformBuilder;
+    readonly scale: (amount: number | Partial<Readonly<{
         x: number;
         y: number;
-    }>) => TransformBuilder;
+    }>>) => TransformBuilder;
     readonly rotate: (angle: number, origin?: Readonly<{
         x: number;
         y: number;
