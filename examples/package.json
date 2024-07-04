@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "pictolib-svg-examples",
+  "name": "pictolib-examples",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -11,12 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pictolib": "file:../",
-    "@types/node": "^20.14.5"
+    "pictolib": "file:../"
   },
   "devDependencies": {
-    "@swc-node/register": "^1.9.2",
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^20.14.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.2",
+    "typescript-eslint": "^7.14.1"
   }
 }

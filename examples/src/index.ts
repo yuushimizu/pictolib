@@ -4,6 +4,8 @@ import { type Picto, type PictoFragment, create } from "pictolib";
 
 const outputDir = path.join(new URL(".", import.meta.url).pathname, "..", "output");
 
+await fs.mkdir(outputDir, { recursive: true });
+
 const save = (name: string, picto: Picto) => {
   void fs.writeFile(
     path.format({
