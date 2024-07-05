@@ -2,6 +2,7 @@ import { type Rect } from "./coord.js";
 import { type PresentationAttributes } from "./picto-data.js";
 import { type FragmentManipulators } from "./fragment.js";
 export { type PictoFragment } from "./fragment.js";
+export { type Coord } from "./coord.js";
 export type PictoOptions = PresentationAttributes & Readonly<Partial<{
     viewBox: Rect;
 }>>;

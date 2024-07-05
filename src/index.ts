@@ -5,6 +5,8 @@ import { type PictoFragment, type FragmentManipulators, create as createGroup } 
 
 export { type PictoFragment } from "./fragment.js";
 
+export { type Coord } from "./coord.js";
+
 export type PictoOptions = PresentationAttributes &
   Readonly<
     Partial<{
