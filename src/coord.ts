@@ -14,12 +14,5 @@ export type Rect = Readonly<{
 }>;
 
 export const normalizeAngle = (angle: number): number => {
-  let result = angle;
-  while (result < 0) {
-    result += Math.PI * 2;
-  }
-  while (result >= Math.PI * 2) {
-    result -= Math.PI * 2;
-  }
-  return result;
+  return (((angle % Math.PI) * 2 + Math.PI * 2) % Math.PI) * 2;
 };
